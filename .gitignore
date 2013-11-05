@@ -1,0 +1,12 @@
+TorChatAndroid/gen
+TorChatAndroid/assets
+TorChatAndroid/bin
+TorChatAndroid/.settings
+TorChatAndroid/build.xml
+TorChatAndroid/local.properties
+TorChatAndroid/proguard-project.txt
+TorChatAndroid/doc
+TorChatAndroid/libs
+
+TorChat/bin
+
