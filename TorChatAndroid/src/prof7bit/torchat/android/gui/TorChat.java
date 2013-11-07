@@ -1,15 +1,22 @@
 package prof7bit.torchat.android.gui;
 
+import info.guardianproject.onionkit.ui.OrbotHelper;
+
+import java.io.IOException;
+
 import prof7bit.torchat.android.R;
 import prof7bit.torchat.android.service.Backend;
 import prof7bit.torchat.android.service.PrintlnRedirect;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+
 
 /**
  * Main activity that is visible on start of application.
@@ -21,6 +28,9 @@ import com.actionbarsherlock.view.MenuItem;
  * @author Bernd Kreuss <prof7bit@gmail.com>
  */
 public class TorChat extends SherlockActivity {
+	
+	final static String HOST_NAME = "hs_host";
+	final static int HS_PORT = 11009;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +38,7 @@ public class TorChat extends SherlockActivity {
 		PrintlnRedirect.Install("TorChat");
 		System.out.println("onCreate");
 		setContentView(R.layout.l_roster);
-		doStartService();
+		startTorService();
 		doRegisterEventListeners();
 	}
 	
@@ -99,4 +109,36 @@ public class TorChat extends SherlockActivity {
 		System.out.println("doShowSettings");
 		// nothing yet
 	}
+	
+	protected void startTorService() {
+		OrbotHelper oh = new OrbotHelper(this);
+		oh.requestOrbotStart(this);
+	}
+	
+	protected void openHS(int port) {
+		OrbotHelper oh = new OrbotHelper(this);
+		oh.requestHiddenServiceOnPort(this, port);
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (data != null) {
+			String hs_host = data.getStringExtra(HOST_NAME);
+			setMyTorDomain(hs_host != null ? hs_host : "not defined");
+			Log.i("HOST_NAME", hs_host != null ? hs_host : "null");
+			doStartService();
+
+		}
+
+		if (requestCode == 1) {
+			openHS(HS_PORT);
+
+			return;
+		}
+
+	}
+	
+	protected void setMyTorDomain(String hsHostName) {
+		setTitle(hsHostName);
+	}
+	
 }
