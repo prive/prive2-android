@@ -69,7 +69,7 @@ public class Connection implements TCPHandler{
 	@Override
 	public void onDisconnect(Exception e) {
 		System.out.println("Connection.onDisconnect: " + e.toString());
-		// TODO Auto-generated method stub
+		mConnectionHandler.onDisconnect(e.toString());
 	}
 
 	@Override
@@ -174,5 +174,14 @@ public class Connection implements TCPHandler{
 	 */
 	public String getMyRandomIdentifier(){
 		return Connection.MY_RAND_STRING;
+	}
+	
+	
+	/**
+	 * return connection handler for pass events
+	 * @return
+	 */
+	public ConnectionHandler getConnectionHandler(){
+		return this.mConnectionHandler;
 	}
 }

@@ -7,6 +7,7 @@ import prof7bit.reactor.ListenPortHandler;
 import prof7bit.reactor.Reactor;
 import prof7bit.reactor.TCP;
 import prof7bit.reactor.TCPHandler;
+import android.util.Log;
 
 public class Client implements ListenPortHandler, ConnectionHandler {
 	final static String LOG_TAG = "Client";
@@ -28,14 +29,31 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 
 	@Override
 	public TCPHandler onAccept(TCP tcp) {
-		Connection c = new Connection(tcp);
+		Log.i(LOG_TAG, "new connection was accepted");
+		Connection c = new Connection(tcp, this);
 		return c;
 	}
 
-	// TODO chnge logic
+	// TODO change logic
 	@Override
 	public void onPingReceived(Msg_ping msg) {
-//		clientHandler.logEvent(LOG_TAG, msg.mCommand + " " + msg.mOnionAddress
-//				+ " " + msg.mRandomString);
+
+	}
+
+	@Override
+	public void onPongReceived(Msg_pong msg) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onMessageReceived(Msg_message msg) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onDisconnect(String reason) {
+
 	}
 }

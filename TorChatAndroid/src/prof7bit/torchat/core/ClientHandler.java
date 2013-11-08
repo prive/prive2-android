@@ -9,5 +9,9 @@ package prof7bit.torchat.core;
  *
  */
 public interface ClientHandler {
-	public void logEvent(String tag, String logString);
+	
+	public void onStartHandshake(String onionAddress, String randomString);
+	
+	public void onHandshakeComplete();
+	
 }
