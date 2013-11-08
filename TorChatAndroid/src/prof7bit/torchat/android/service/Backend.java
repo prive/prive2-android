@@ -1,7 +1,9 @@
 package prof7bit.torchat.android.service;
 import java.io.IOException;
+import java.util.List;
 
 import prof7bit.torchat.android.R;
+import prof7bit.torchat.android.gui.TestChatActivity;
 import prof7bit.torchat.android.gui.TorChat;
 import prof7bit.torchat.core.Client;
 import prof7bit.torchat.core.ClientHandler;
@@ -10,7 +12,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -20,6 +24,10 @@ public class Backend extends Service implements ClientHandler {
 	private int NOTIFICATION = 10429; //Any unique number for this notification
 
 	private Client client;
+	
+	private final IBinder mBinder = new LocalBinder();
+	
+	private List<MessageListener> listListeners = null;
 	
 	@SuppressWarnings("deprecation")
 	private void showNotification() {
@@ -49,7 +57,8 @@ public class Backend extends Service implements ClientHandler {
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		return null;
+		Log.d("onBind","DONE");
+		return mBinder;
 	}
 
 	@Override
@@ -67,6 +76,18 @@ public class Backend extends Service implements ClientHandler {
 		}
 	}	
 	
+	public void removeListener(MessageListener listener) {
+		
+		listListeners.remove(listener);
+		
+	}
+	
+	public void addListener(MessageListener listener) {
+		
+		listListeners.add(listener);
+		
+	}
+	
 	@Override	
 	public void onDestroy() {	
 		try {
@@ -82,4 +103,28 @@ public class Backend extends Service implements ClientHandler {
 	public void onStart(Intent intent, int startid) {
 		// nothing
 	}
+
+	@Override
+	public void onMessage(String user, String message) {
+		if(listListeners.size()==0) {
+			TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, message);
+		}
+		else {
+			//TODO for test
+			for(MessageListener listener : listListeners)
+				listener.onMessage(message);
+				
+		}
+		
+	}
+	
+	public interface MessageListener{
+		public void onMessage(String message);
+	}
+	
+	public class LocalBinder extends Binder {
+        public Backend getService() {
+            return Backend.this;
+        }
+    }
 }
