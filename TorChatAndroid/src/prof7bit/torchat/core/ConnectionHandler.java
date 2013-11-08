@@ -12,6 +12,7 @@ public interface ConnectionHandler {
 	/**
 	 * other
 	 */
+	public void onConnect(Connection connection);
 	public void onDisconnect(String reason);
 	
 }

@@ -14,4 +14,6 @@ public interface ClientHandler {
 	
 	public void onHandshakeComplete();
 	
+	public void onHandshakeAbort(String reason);
+	
 }

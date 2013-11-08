@@ -4,9 +4,10 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import prof7bit.reactor.TCPHandler;
 import prof7bit.reactor.Reactor;
 import prof7bit.reactor.TCP;
+import prof7bit.reactor.TCPHandler;
+import android.util.Log;
 
 /**
  * This class represents an established TorChat p2p connection, it can either 
@@ -25,6 +26,8 @@ public class Connection implements TCPHandler{
 	 * HandshakeState is enum for understanding state of handshake
 	 */
 	enum HandshakeState {DEFAULT, START, SUCCESS, ABORT}
+	
+	final static String LOG_TAG = "Connection";
 	
 	private TCP tcp;
 	private byte[] bufIncomplete = new byte[0];
@@ -66,13 +69,16 @@ public class Connection implements TCPHandler{
 	 * @param port Port to connect to
 	 * @throws IOException problems opening the local socket (not the connection itself)  
 	 */
-	public Connection(Reactor r, String addr, int port) throws IOException{
+	public Connection(Reactor r, String addr, int port, ConnectionHandler connectionHandler) throws IOException{
 		tcp = new TCP(r, addr, port, this, "127.0.0.1", 9050, "TorChat");
+		type = Type.OUTCOMING;
+		mConnectionHandler = connectionHandler;
 	}
 
 	@Override
 	public void onConnect() {
-		// TODO Auto-generated method stub
+		Log.i(LOG_TAG, "connection established");
+		mConnectionHandler.onConnect(this);
 	}
 
 	@Override

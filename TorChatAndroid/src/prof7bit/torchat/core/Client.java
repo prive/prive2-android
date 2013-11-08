@@ -11,11 +11,12 @@ import android.util.Log;
 
 public class Client implements ListenPortHandler, ConnectionHandler {
 	final static String LOG_TAG = "Client";
+	final static String ONION_DOMAIN = ".onion";
 
 	private ClientHandler clientHandler;
 	private Reactor reactor;
 	private ListenPort listenPort;
-	
+
 	private String mMyOnionAddress = "gnlkmtgnk134lmrw34nkrw";
 	private String mMyRandomString = "213543857986565313";
 
@@ -37,78 +38,84 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 		return c;
 	}
 
+	public void startConnection(String onionAddress) throws IOException {
+		Log.i(LOG_TAG, "start connection");
+		Connection c;
+		c = new Connection(new Reactor(), onionAddress + ONION_DOMAIN, 11009,
+				this);
+
+	}
+
 	// TODO change logic
 	@Override
 	public void onPingReceived(Msg_ping msg) {
-		Log.i(LOG_TAG, "ping " + msg.getOnionAddress() + " " + msg.getRandomString());
-		clientHandler.onStartHandshake(msg.getOnionAddress(), msg.getRandomString());
+		Log.i(LOG_TAG,
+				"ping " + msg.getOnionAddress() + " " + msg.getRandomString());
+		clientHandler.onStartHandshake(msg.getOnionAddress(),
+				msg.getRandomString());
 		Connection connection = msg.getConnection();
-		if (connection.type == Connection.Type.INCOMING){
-			/* if it is incoming connection
-			 * handshake is starting since this moment
-			 * send ping pong
-			 * TODO send status, version
+		if (connection.type == Connection.Type.INCOMING) {
+			/*
+			 * if it is incoming connection handshake is starting since this
+			 * moment send ping pong TODO send status, version
 			 */
-			
-			//set handshake state to start
+
+			// set handshake state to start
 			connection.handshakeState = Connection.HandshakeState.START;
-			
-			//send message "ping"
+
+			// send message "ping"
 			Msg_ping msgPing = new Msg_ping(connection);
 			msgPing.setOnionAddress(mMyOnionAddress);
 			msgPing.setRandomString(mMyRandomString);
 			connection.sendMessage(msgPing);
-			
-			//send message 'pong"
+
+			// send message 'pong"
 			Msg_pong msgPong = new Msg_pong(connection);
 			msgPong.setRandomString(msg.getRandomString());
 			connection.sendMessage(msgPong);
-			
-		} else if (connection.type == Connection.Type.OUTCOMING){
-			/* if it is outcoming connection
-			 * handshake not change
-			 * need to send pong
-			 * TODO may these packets is not enough
+
+		} else if (connection.type == Connection.Type.OUTCOMING) {
+			/*
+			 * if it is outcoming connection handshake not change need to send
+			 * pong TODO may these packets is not enough
 			 */
-			
-			//send "pong"
+
+			// send "pong"
 			Msg_pong msgPong = new Msg_pong(connection);
 			msgPong.setRandomString(msg.getRandomString());
 			connection.sendMessage(msgPong);
-		} else 
+		} else
 			Log.w(LOG_TAG, "undefined connection type");
-		
+
 	}
 
 	@Override
 	public void onPongReceived(Msg_pong msg) {
 		Log.i(LOG_TAG, "pong " + msg.getRandomString());
-		//check is random string is my random string
-		if(msg.getRandomString() == mMyRandomString){
-			/*if it is my string handshake is complete
-			 * need to notify client handler
-			 * if it is outgoing connection need to send pong
+		// check is random string is my random string
+		if (msg.getRandomString().equals(mMyRandomString)) {
+			/*
+			 * if it is my string handshake is complete need to notify client
+			 * handler if it is outgoing connection need to send pong
 			 */
 			clientHandler.onHandshakeComplete();
-			
+
 			Connection connection = msg.getConnection();
-			
-			//set handshake state to success
+
+			// set handshake state to success
 			connection.handshakeState = Connection.HandshakeState.SUCCESS;
-			
-			//if outcoming
-			if(connection.type == Connection.Type.OUTCOMING){
-				//send "pong"
+
+			// if outcoming
+			if (connection.type == Connection.Type.OUTCOMING) {
+				// send "pong"
 				Msg_pong msgPong = new Msg_pong(connection);
 				msgPong.setRandomString(msg.getRandomString());
 				connection.sendMessage(msgPong);
 			}
-			
-			
-			
-		} else{
+
+		} else {
 			Log.e(LOG_TAG, "string is not my string");
-			//TODO need to abort connection here
+			clientHandler.onHandshakeAbort("string is not my string");
 		}
 	}
 
@@ -120,6 +127,26 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 
 	@Override
 	public void onDisconnect(String reason) {
+		// TODO implement
+	}
 
+	/**
+	 * This function will be called then connection will be established
+	 * 
+	 */
+	@Override
+	public void onConnect(Connection connection) {
+		startHandshake(connection);
+	}
+
+	protected void startHandshake(Connection connection) {
+		// set handshake state to start
+		connection.handshakeState = Connection.HandshakeState.START;
+
+		// send ping foor notify recepient of starting handshake
+		Msg_ping msgPing = new Msg_ping(connection);
+		msgPing.setOnionAddress(mMyOnionAddress);
+		msgPing.setRandomString(mMyRandomString);
+		connection.sendMessage(msgPing);
 	}
 }

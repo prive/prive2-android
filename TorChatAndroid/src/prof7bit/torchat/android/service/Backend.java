@@ -16,7 +16,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class Backend extends Service implements ClientHandler {
+	public final static String LOG_TAG = "Backend";
 
+	public final static String ACTION_OPEN_CONNECTION = "prof7bit.torchat.android.service.Backend.OPEN_CONNECTION";
+	public final static String EXTRA_STRING_ONION_ADDRESS = "prof7bit.torchat.android.service.Backend.EXTRA_ONION_ADDRESS";
+	
 	private NotificationManager nMgr;
 	private int NOTIFICATION = 10429; // Any unique number for this notification
 
@@ -85,8 +89,25 @@ public class Backend extends Service implements ClientHandler {
 	}
 
 	@Override
-	public void onStart(Intent intent, int startid) {
-		// nothing
+	public void onStart(final Intent intent, int startid) {
+		//request for open new connection
+		if(intent.getAction() == ACTION_OPEN_CONNECTION){
+			if(intent.getStringExtra(EXTRA_STRING_ONION_ADDRESS) != null)
+				(new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						try {
+							client.startConnection(intent.getStringExtra(EXTRA_STRING_ONION_ADDRESS));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}		
+					}
+				})).start();
+				
+			else
+				Log.w(LOG_TAG, "extra 'onion address' is null");
+		}
 	}
 
 	/**
@@ -99,7 +120,7 @@ public class Backend extends Service implements ClientHandler {
 	 */
 	@Override
 	public void onStartHandshake(String onionAddress, String randomString) {
-		// TODO Auto-generated method stub
+		Log.i(LOG_TAG, "handshake starting...");
 		
 	}
 
@@ -108,7 +129,16 @@ public class Backend extends Service implements ClientHandler {
 	 */
 	@Override
 	public void onHandshakeComplete() {
-		// TODO Auto-generated method stub
+		Log.i(LOG_TAG, "handshake complete!");
+		
+	}
+
+	/**
+	 * This function will be called if handshake was aborted
+	 */
+	@Override
+	public void onHandshakeAbort(String reason) {
+		Log.i(LOG_TAG, "handshake abort. reason: " + reason != null ? reason : "undefined");
 		
 	}
 }
