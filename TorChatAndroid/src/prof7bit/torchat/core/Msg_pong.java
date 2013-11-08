@@ -11,7 +11,7 @@ import java.io.EOFException;
  *      <random-string>
  * ******************************
  * 
- * @author Bernd Kreuss <prof7bit@gmail.com>
+ * @author Bernd Kreuss <demonlee999@gmail.com>
  *
  */
 public class Msg_pong extends Msg {
