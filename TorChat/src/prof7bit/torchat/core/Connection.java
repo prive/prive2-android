@@ -16,6 +16,11 @@ import prof7bit.reactor.TCP;
  *
  */
 public class Connection implements TCPHandler{
+	/*spike just for testing handshake
+	 * it will be remove in one of next commits
+	 */
+	final static String MY_RAND_STRING = "143544356875676531247";
+	
 	private TCP tcp;
 	private byte[] bufIncomplete = new byte[0];
 	
@@ -155,5 +160,13 @@ public class Connection implements TCPHandler{
 			// "not_implemented" and otherwise does nothing.
 			return new MsgUnknown(this);
 		}
+	}
+	
+	/**
+	 * TODO change this logic
+	 * @return random string for responder can identifies me
+	 */
+	public String getMyRandomIdentifier(){
+		return Connection.MY_RAND_STRING;
 	}
 }
