@@ -19,6 +19,7 @@ public class TestChatActivity extends Activity implements MessageListener{
 	final static String USER_STRING = "user";
 	final static String MESSAGE_STRING = "message";
 	boolean mIsBound = false;
+	TextView tvChat;
 	
 	ServiceConnection mConnection = new ServiceConnection() {
 		
@@ -46,7 +47,7 @@ public class TestChatActivity extends Activity implements MessageListener{
 		ScrollView svScroll = new ScrollView(TestChatActivity.this);
 		svScroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		
-		TextView tvChat = new TextView(TestChatActivity.this);
+		tvChat = new TextView(TestChatActivity.this);
 		tvChat.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		
 		svScroll.addView(tvChat);
@@ -66,10 +67,15 @@ public class TestChatActivity extends Activity implements MessageListener{
 		
 	}
 	
+	@Override
+	protected void onPause() {
+		doUnbindService();
+		super.onPause();
+	}
 	
 	@Override
 	protected void onResume() {
-	
+		doBindService();
 		super.onResume();
 		
 		
@@ -86,15 +92,12 @@ public class TestChatActivity extends Activity implements MessageListener{
 
 	@Override
 	public void onMessage(String message) {
-		// TODO Auto-generated method stub
 		
+		tvChat.append(message);
 	}
 	
 	void doBindService() {
-	    // Establish a connection with the service.  We use an explicit
-	    // class name because we want a specific service implementation that
-	    // we know will be running in our own process (and thus won't be
-	    // supporting component replacement by other applications).
+	   
 		bindService(new Intent(this, Backend.class), mConnection, Context.BIND_AUTO_CREATE);
 	    mIsBound = true;
 	}
