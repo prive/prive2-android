@@ -16,14 +16,21 @@ import prof7bit.reactor.TCP;
  *
  */
 public class Connection implements TCPHandler{
-	/*spike just for testing handshake
-	 * it will be remove in one of next commits
+	/**
+	 * ConnectionType is enum for understanding incoming or outcoming connection is
 	 */
-	final static String MY_RAND_STRING = "143544356875676531247";
+	enum Type {INCOMING, OUTCOMING}
+	
+	/**
+	 * HandshakeState is enum for understanding state of handshake
+	 */
+	enum HandshakeState {DEFAULT, START, SUCCESS, ABORT}
 	
 	private TCP tcp;
 	private byte[] bufIncomplete = new byte[0];
 	private ConnectionHandler mConnectionHandler= null;
+	public Type type;
+	public HandshakeState handshakeState;
 	
 	public void send(MessageBuffer b){
 		tcp.send(b.encodeForSending());
@@ -38,11 +45,13 @@ public class Connection implements TCPHandler{
 	 */
 	public Connection(TCP c){
 		tcp = c;
+		type = Type.INCOMING;
 	}
 	
 	public Connection (TCP c, ConnectionHandler connectionHandler){
 		tcp = c;
 		mConnectionHandler = connectionHandler;
+		type = Type.INCOMING;
 	}
 	
 	/**
@@ -169,19 +178,18 @@ public class Connection implements TCPHandler{
 	}
 	
 	/**
-	 * TODO change this logic
-	 * @return random string for responder can identifies me
-	 */
-	public String getMyRandomIdentifier(){
-		return Connection.MY_RAND_STRING;
-	}
-	
-	
-	/**
 	 * return connection handler for pass events
 	 * @return
 	 */
 	public ConnectionHandler getConnectionHandler(){
 		return this.mConnectionHandler;
+	}
+	
+	/**
+	 * Serialize and send message to recepient
+	 * @param message
+	 */
+	public void sendMessage(Msg message){
+		send(message.serialize());
 	}
 }

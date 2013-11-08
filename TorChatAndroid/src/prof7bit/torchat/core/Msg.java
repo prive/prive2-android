@@ -4,11 +4,11 @@ package prof7bit.torchat.core;
  * This is the abstract base class for all protocol messages 
  */
 abstract class Msg {
-	protected Connection connection;
+	protected Connection mConnection;
 	protected String mCommand = null;
 	
 	public Msg(Connection connection){
-		this.connection = connection;
+		this.mConnection = connection;
 	}
 	
 	public abstract void parse(MessageBuffer buf) throws XMessageParseException;
@@ -24,5 +24,13 @@ abstract class Msg {
 	protected void writeCommand(MessageBuffer buffer){
 		if (mCommand != null)
 			buffer.writeString(mCommand);
+	}
+	
+	/**
+	 * return connection of this message
+	 * @return
+	 */
+	public Connection getConnection(){
+		return mConnection;
 	}
 }

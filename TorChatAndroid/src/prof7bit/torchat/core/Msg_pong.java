@@ -49,7 +49,7 @@ public class Msg_pong extends Msg {
 	@Override
 	public void execute() {
 		System.out.println("Msg_pong.execute()");
-		// TODO Auto-generated method stub
+		mConnection.getConnectionHandler().onPongReceived(this);
 	}
 	
 	/**

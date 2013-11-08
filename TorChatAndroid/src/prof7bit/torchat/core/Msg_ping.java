@@ -54,11 +54,12 @@ public class Msg_ping extends Msg {
 	@Override
 	public void execute() {
 		System.out.println("Msg_ping.execute()");
-		connection.getConnectionHandler().onPingReceived(this);
+		mConnection.getConnectionHandler().onPingReceived(this);
 	}
 
 	/**
 	 * write onion address into passed buffer
+	 * 
 	 * 
 	 * @param buffer
 	 */
