@@ -1,5 +1,6 @@
 package prof7bit.torchat.android.gui;
 
+import prof7bit.torchat.android.R;
 import prof7bit.torchat.android.service.Backend;
 import prof7bit.torchat.android.service.Backend.MessageListener;
 import android.app.Activity;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.sax.StartElementListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -20,6 +23,8 @@ public class TestChatActivity extends Activity implements MessageListener{
 	final static String MESSAGE_STRING = "message";
 	boolean mIsBound = false;
 	TextView tvChat;
+	Button btnSend;
+	EditText etSend;
 	
 	ServiceConnection mConnection = new ServiceConnection() {
 		
@@ -43,16 +48,13 @@ public class TestChatActivity extends Activity implements MessageListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_chat);
 		
-		ScrollView svScroll = new ScrollView(TestChatActivity.this);
-		svScroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		tvChat = (TextView)findViewById(R.id.tv_chat);
+		etSend = (EditText)findViewById(R.id.et_send);
+		btnSend = (Button)findViewById(R.id.btn_send);
 		
-		tvChat = new TextView(TestChatActivity.this);
-		tvChat.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		
-		svScroll.addView(tvChat);
-		
-		setContentView(svScroll);
 		
 		if(getIntent().getExtras()!=null) {
 			Bundle bundle = getIntent().getExtras();
