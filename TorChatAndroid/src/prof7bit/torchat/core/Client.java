@@ -98,9 +98,9 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 			 * if it is my string handshake is complete need to notify client
 			 * handler if it is outgoing connection need to send pong
 			 */
-			clientHandler.onHandshakeComplete();
-
 			Connection connection = msg.getConnection();
+			
+			clientHandler.onHandshakeComplete(connection.recepietnOnionAddress);
 
 			// set handshake state to success
 			connection.handshakeState = Connection.HandshakeState.SUCCESS;

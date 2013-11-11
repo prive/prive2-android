@@ -57,7 +57,8 @@ public class TestChatActivity extends Activity implements MessageListener{
 		if(getIntent().getExtras()!=null) {
 			Bundle bundle = getIntent().getExtras();
 			if(bundle.containsKey(USER_STRING)&&bundle.containsKey(MESSAGE_STRING)) {
-				setTitle(bundle.getString(USER_STRING));
+				String user = bundle.getString(USER_STRING);
+				setTitle(user != null ? user : "not_detected");
 				tvChat.append(bundle.getString(MESSAGE_STRING));
 			}
 				
@@ -86,6 +87,7 @@ public class TestChatActivity extends Activity implements MessageListener{
 		Intent i = new Intent(context, TestChatActivity.class);
 		i.putExtra(USER_STRING, user);
 		i.putExtra(MESSAGE_STRING, message);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(i);
 		
 	}

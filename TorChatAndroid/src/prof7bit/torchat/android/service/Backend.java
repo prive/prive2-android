@@ -149,9 +149,9 @@ public class Backend extends Service implements ClientHandler {
 	 * This function will be called then chatters complete their handshake
 	 */
 	@Override
-	public void onHandshakeComplete() {
+	public void onHandshakeComplete(String user) {
 		Log.i(LOG_TAG, "handshake complete!");
-		
+		TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, "Handshake complete");
 	}
 
 	/**
