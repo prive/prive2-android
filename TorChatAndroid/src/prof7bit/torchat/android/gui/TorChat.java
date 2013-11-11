@@ -30,6 +30,8 @@ import com.actionbarsherlock.view.MenuItem;
  */
 public class TorChat extends SherlockActivity {
 	final static String LOG_TAG = "TorChat";
+	final static String HOST_NAME = "hs_host";
+	final static int HS_PORT = 11009;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
