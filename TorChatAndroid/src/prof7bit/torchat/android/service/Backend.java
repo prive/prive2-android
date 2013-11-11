@@ -1,5 +1,6 @@
 package prof7bit.torchat.android.service;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import prof7bit.torchat.android.R;
@@ -27,7 +28,7 @@ public class Backend extends Service implements ClientHandler {
 	
 	private final IBinder mBinder = new LocalBinder();
 	
-	private List<MessageListener> listListeners = null;
+	private List<MessageListener> listListeners = new ArrayList<Backend.MessageListener>();
 	
 	@SuppressWarnings("deprecation")
 	private void showNotification() {
