@@ -9,5 +9,7 @@ package prof7bit.torchat.core;
  *
  */
 public interface ClientHandler {
-	// TODO
+	
+	void onMessage(String user, String message);
+	
 }

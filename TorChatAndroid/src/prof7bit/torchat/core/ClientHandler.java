@@ -12,8 +12,10 @@ public interface ClientHandler {
 	
 	public void onStartHandshake(String onionAddress, String randomString);
 	
-	public void onHandshakeComplete();
+	public void onHandshakeComplete(String users);
 	
 	public void onHandshakeAbort(String reason);
+
+	public void onMessage(String user, String message);
 	
 }

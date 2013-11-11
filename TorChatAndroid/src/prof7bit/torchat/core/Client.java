@@ -9,7 +9,7 @@ import prof7bit.reactor.TCP;
 import prof7bit.reactor.TCPHandler;
 import android.util.Log;
 
-public class Client implements ListenPortHandler, ConnectionHandler {
+public class Client extends ConnectionManager implements ListenPortHandler, ConnectionHandler {
 	final static String LOG_TAG = "Client";
 	final static String ONION_DOMAIN = ".onion";
 
@@ -17,9 +17,9 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 	private Reactor reactor;
 	private ListenPort listenPort;
 
-	private String mMyOnionAddress = "gnlkmtgnk134lmrw34nkrw";
+	private String mMyOnionAddress = "346kjb8yb343516fsnte";
 	private String mMyRandomString = "213543857986565313";
-
+	
 	public Client(ClientHandler clientHandler, int port) throws IOException {
 		this.clientHandler = clientHandler;
 		this.reactor = new Reactor();
@@ -98,20 +98,12 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 			 * if it is my string handshake is complete need to notify client
 			 * handler if it is outgoing connection need to send pong
 			 */
-			clientHandler.onHandshakeComplete();
-
 			Connection connection = msg.getConnection();
+			
+			clientHandler.onHandshakeComplete(connection.recepietnOnionAddress);
 
 			// set handshake state to success
 			connection.handshakeState = Connection.HandshakeState.SUCCESS;
-
-			// if outcoming
-			if (connection.type == Connection.Type.OUTCOMING) {
-				// send "pong"
-				Msg_pong msgPong = new Msg_pong(connection);
-				msgPong.setRandomString(msg.getRandomString());
-				connection.sendMessage(msgPong);
-			}
 
 		} else {
 			Log.e(LOG_TAG, "string is not my string");
@@ -121,7 +113,12 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 
 	@Override
 	public void onMessageReceived(Msg_message msg) {
-		// TODO Auto-generated method stub
+		Log.i(LOG_TAG + "onMessageReceived", "message was received");
+		String onionAddress = msg.getConnection().recepietnOnionAddress;
+		if(onionAddress != null)
+			clientHandler.onMessage(onionAddress, msg.getMessage());
+		else
+			Log.w(LOG_TAG + "onMessageReceived", "onionAddress of recepient is null");
 
 	}
 
@@ -139,6 +136,10 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 		startHandshake(connection);
 	}
 
+	/**
+	 * Function for start handshake process into establishing connection
+	 * @param connection
+	 */
 	protected void startHandshake(Connection connection) {
 		// set handshake state to start
 		connection.handshakeState = Connection.HandshakeState.START;
@@ -148,5 +149,17 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 		msgPing.setOnionAddress(mMyOnionAddress);
 		msgPing.setRandomString(mMyRandomString);
 		connection.sendMessage(msgPing);
+	}
+	
+	protected void sendMessage(String onionAddress, String textMessage){
+		Connection connection = getConnectionByOnionAddress(onionAddress);
+		if (connection != null){
+			Msg_message message = new Msg_message(connection);
+			message.setMessage(textMessage);
+			connection.sendMessage(message);
+			Log.i(LOG_TAG + "sendMessage", "message was sended");
+		} else {
+			Log.w(LOG_TAG + "sendMessage", "no connection found for this onion address");
+		}
 	}
 }

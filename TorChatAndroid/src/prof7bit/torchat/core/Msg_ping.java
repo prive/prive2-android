@@ -54,7 +54,7 @@ public class Msg_ping extends Msg {
 	@Override
 	public void execute() {
 		System.out.println("Msg_ping.execute()");
-		mConnection.getConnectionHandler().onPingReceived(this);
+		mConnection.onPingReceived(this);
 	}
 
 	/**

@@ -1,8 +1,11 @@
 package prof7bit.torchat.android.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import prof7bit.torchat.android.R;
+import prof7bit.torchat.android.gui.TestChatActivity;
 import prof7bit.torchat.android.gui.TorChat;
 import prof7bit.torchat.core.Client;
 import prof7bit.torchat.core.ClientHandler;
@@ -11,6 +14,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,7 +29,11 @@ public class Backend extends Service implements ClientHandler {
 	private int NOTIFICATION = 10429; // Any unique number for this notification
 
 	private Client client;
-
+	
+	private final IBinder mBinder = new LocalBinder();
+	
+	private List<MessageListener> listListeners = new ArrayList<Backend.MessageListener>();
+	
 	@SuppressWarnings("deprecation")
 	private void showNotification() {
 		CharSequence title = getText(R.string.service_running);
@@ -58,7 +66,8 @@ public class Backend extends Service implements ClientHandler {
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		return null;
+		Log.d("onBind","DONE");
+		return mBinder;
 	}
 
 	@Override
@@ -76,8 +85,20 @@ public class Backend extends Service implements ClientHandler {
 		}
 	}
 
-	@Override
-	public void onDestroy() {
+	public void removeListener(MessageListener listener) {
+		
+		listListeners.remove(listener);
+		
+	}
+	
+	public void addListener(MessageListener listener) {
+		
+		listListeners.add(listener);
+		
+	}
+	
+	@Override	
+	public void onDestroy() {	
 		try {
 			client.close();
 		} catch (InterruptedException e) {
@@ -128,9 +149,9 @@ public class Backend extends Service implements ClientHandler {
 	 * This function will be called then chatters complete their handshake
 	 */
 	@Override
-	public void onHandshakeComplete() {
+	public void onHandshakeComplete(String user) {
 		Log.i(LOG_TAG, "handshake complete!");
-		
+		TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, "Handshake complete");
 	}
 
 	/**
@@ -141,4 +162,28 @@ public class Backend extends Service implements ClientHandler {
 		Log.i(LOG_TAG, "handshake abort. reason: " + reason != null ? reason : "undefined");
 		
 	}
+
+	@Override
+	public void onMessage(String user, String message) {
+		if(listListeners.size()==0) {
+			TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, message);
+		}
+		else {
+			//TODO for test
+			for(MessageListener listener : listListeners)
+				listener.onMessage(message);
+				
+		}
+		
+	}
+	
+	public interface MessageListener{
+		public void onMessage(String message);
+	}
+	
+	public class LocalBinder extends Binder {
+        public Backend getService() {
+            return Backend.this;
+        }
+    }
 }
