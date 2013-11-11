@@ -34,6 +34,7 @@ public class Connection implements TCPHandler{
 	private ConnectionHandler mConnectionHandler= null;
 	public Type type;
 	public HandshakeState handshakeState;
+	public String recepietnOnionAddress = null;
 	
 	public void send(MessageBuffer b){
 		tcp.send(b.encodeForSending());
@@ -197,5 +198,19 @@ public class Connection implements TCPHandler{
 	 */
 	public void sendMessage(Msg message){
 		send(message.serialize());
+	}
+	
+	
+	public void onPingReceived(Msg_ping message){
+		recepietnOnionAddress = message.getOnionAddress();
+		mConnectionHandler.onPingReceived(message);
+	}
+	
+	public void onPongReceived(Msg_pong message){
+		mConnectionHandler.onPongReceived(message);
+	}
+	
+	public void onMessageReceived(Msg_message message){
+		mConnectionHandler.onMessageReceived(message);
 	}
 }

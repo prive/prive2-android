@@ -51,7 +51,7 @@ public class Msg_message extends Msg {
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-
+		mConnection.onMessageReceived(this);
 	}
 	
 	protected void writeMessage(MessageBuffer buffer){

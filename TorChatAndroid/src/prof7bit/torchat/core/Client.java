@@ -17,7 +17,7 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 	private Reactor reactor;
 	private ListenPort listenPort;
 
-	private String mMyOnionAddress = "gnlkmtgnk134lmrw34nkrw";
+	private String mMyOnionAddress = "346kjb8yb343516fsnte";
 	private String mMyRandomString = "213543857986565313";
 
 	public Client(ClientHandler clientHandler, int port) throws IOException {
@@ -105,14 +105,6 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 			// set handshake state to success
 			connection.handshakeState = Connection.HandshakeState.SUCCESS;
 
-			// if outcoming
-			if (connection.type == Connection.Type.OUTCOMING) {
-				// send "pong"
-				Msg_pong msgPong = new Msg_pong(connection);
-				msgPong.setRandomString(msg.getRandomString());
-				connection.sendMessage(msgPong);
-			}
-
 		} else {
 			Log.e(LOG_TAG, "string is not my string");
 			clientHandler.onHandshakeAbort("string is not my string");
@@ -121,7 +113,11 @@ public class Client implements ListenPortHandler, ConnectionHandler {
 
 	@Override
 	public void onMessageReceived(Msg_message msg) {
-		// TODO Auto-generated method stub
+		String onionAddress = msg.getConnection().recepietnOnionAddress;
+		if(onionAddress != null)
+			clientHandler.onMessage(onionAddress, msg.getMessage());
+		else
+			Log.w(LOG_TAG + "onMessageReceived", "onionAddress of recepient is null");
 
 	}
 
