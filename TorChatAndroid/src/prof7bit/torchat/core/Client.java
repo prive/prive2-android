@@ -41,8 +41,9 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 	}
 	
 	public void setMyOnionAddress(String onionAddress){
-		Log.i(LOG_TAG + "setMyOnionAddress", "my onion address is " + onionAddress);
-		mMyOnionAddress = onionAddress;
+		mMyOnionAddress = onionAddress.split(".onion")[0];
+		Log.i(LOG_TAG + "setMyOnionAddress", "my onion address is " + mMyOnionAddress);
+		
 	}
 
 	public void startConnection(String onionAddress) throws IOException {
