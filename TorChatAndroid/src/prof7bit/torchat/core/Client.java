@@ -12,6 +12,7 @@ import android.util.Log;
 public class Client extends ConnectionManager implements ListenPortHandler, ConnectionHandler {
 	final static String LOG_TAG = "Client";
 	final static String ONION_DOMAIN = ".onion";
+	final static int TORCHAT_DEFAULT_PORT = 11009;
 
 	private ClientHandler clientHandler;
 	private Reactor reactor;
@@ -41,7 +42,7 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 	public void startConnection(String onionAddress) throws IOException {
 		Log.i(LOG_TAG, "start connection");
 		Connection c;
-		c = new Connection(new Reactor(), onionAddress + ONION_DOMAIN, 11009,
+		c = new Connection(new Reactor(), onionAddress + ONION_DOMAIN, TORCHAT_DEFAULT_PORT,
 				this);
 
 	}

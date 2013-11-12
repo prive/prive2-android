@@ -40,8 +40,7 @@ public class TorChat extends SherlockActivity {
 		System.out.println("onCreate");
 		setContentView(R.layout.l_roster);
 		initializeLayout();
-		doStartService();
-		doRegisterEventListeners();
+		startTorService();
 	}
 	
 	protected void initializeLayout(){
@@ -70,15 +69,6 @@ public class TorChat extends SherlockActivity {
 		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.m_roster, menu);
 		return true;
-	}
-
-	private void doRegisterEventListeners() {
-		// findViewById(R.id.menu_quit).setOnClickListener(new OnClickListener()
-		// {
-		// public void onClick(View v) {
-		// doQuit();
-		// }
-		// });
 	}
 
 	@Override
