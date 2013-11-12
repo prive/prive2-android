@@ -192,6 +192,19 @@ public class Backend extends Service implements ClientHandler {
 		
 	}
 	
+	/**
+	 * Start sending message for certain connection
+	 * @param user
+	 * @param message
+	 */
+	public void sendMessage(String user, String message){
+		Log.i(LOG_TAG + "/sendMessage", "try to send message");
+		if(client != null)
+			client.sendMessage(user, message);
+		else
+			Log.w(LOG_TAG + "/sendMessage", "client is null");
+	}
+	
 	public interface MessageListener{
 		public void onMessage(String message);
 	}

@@ -27,11 +27,15 @@ public class Msg_message extends Msg {
 	@Override
 	public void parse(MessageBuffer buf) throws XMessageParseException {
 		try {
-			// get onion address first
-			mMessage = buf.readString();
+			mMessage = "";
+			/* get text of message
+			 * spike yet
+			 */
+			while(true)
+				mMessage += buf.readString();
 
 		} catch (EOFException e) {
-			new XMessageParseException(e.getLocalizedMessage());
+			
 		}
 
 	}

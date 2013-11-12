@@ -157,7 +157,7 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 		connection.sendMessage(msgPing);
 	}
 	
-	protected void sendMessage(String onionAddress, String textMessage){
+	public void sendMessage(String onionAddress, String textMessage){
 		Connection connection = getConnectionByOnionAddress(onionAddress);
 		if (connection != null){
 			Msg_message message = new Msg_message(connection);

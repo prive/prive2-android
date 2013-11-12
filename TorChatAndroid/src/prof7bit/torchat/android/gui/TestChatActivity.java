@@ -10,21 +10,24 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.sax.StartElementListener;
-import android.view.ViewGroup.LayoutParams;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class TestChatActivity extends Activity implements MessageListener{
+public class TestChatActivity extends Activity implements MessageListener, OnClickListener{
 	
+	final static String LOG_TAG = "TestChatActivity";
 	final static String USER_STRING = "user";
 	final static String MESSAGE_STRING = "message";
 	boolean mIsBound = false;
 	TextView tvChat;
 	Button btnSend;
 	EditText etSend;
+	
+	String user = null;
 	
 	ServiceConnection mConnection = new ServiceConnection() {
 		
@@ -54,12 +57,14 @@ public class TestChatActivity extends Activity implements MessageListener{
 		etSend = (EditText)findViewById(R.id.et_send);
 		btnSend = (Button)findViewById(R.id.btn_send);
 		
+		btnSend.setOnClickListener(this);
+		
 		
 		
 		if(getIntent().getExtras()!=null) {
 			Bundle bundle = getIntent().getExtras();
 			if(bundle.containsKey(USER_STRING)&&bundle.containsKey(MESSAGE_STRING)) {
-				String user = bundle.getString(USER_STRING);
+				user = bundle.getString(USER_STRING);
 				setTitle(user != null ? user : "not_detected");
 				tvChat.append(bundle.getString(MESSAGE_STRING));
 			}
@@ -112,6 +117,22 @@ public class TestChatActivity extends Activity implements MessageListener{
 	        unbindService(mConnection);
 	        mIsBound = false;
 	    }
+	}
+
+	@Override
+	public void onClick(View v) {
+		String text = "Hellow world";
+		if (etSend.getText().toString().equals(""))
+			Log.w(LOG_TAG + "/onClick", "text is empty. hellow string will be sended");
+		else
+			text = etSend.getText().toString();
+		if(user != null)
+			if(mBackend != null)
+				mBackend.sendMessage(user, text);
+			else
+				Log.w(LOG_TAG + "onClick", "mBackend is null");
+		else
+			Log.w(LOG_TAG + "onClick", "user is null");
 	}
 	
 

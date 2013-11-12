@@ -129,10 +129,6 @@ public class TorChat extends SherlockActivity {
 		oh.requestHiddenServiceOnPort(this, port);
 	}
 	
-	protected void startPassOnionAddress(String myOnionAddress){
-		
-	}
-	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (data != null) {
 			String hs_host = data.getStringExtra(HOST_NAME);
