@@ -36,6 +36,7 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 	public TCPHandler onAccept(TCP tcp) {
 		Log.i(LOG_TAG, "new connection was accepted");
 		Connection c = new Connection(tcp, this);
+		addNewConnection(c);
 		return c;
 	}
 	
@@ -49,6 +50,7 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 		Connection c;
 		c = new Connection(new Reactor(), onionAddress + ONION_DOMAIN, TORCHAT_DEFAULT_PORT,
 				this);
+		addNewConnection(c);
 
 	}
 
