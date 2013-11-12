@@ -40,6 +40,7 @@ public class TorChat extends SherlockActivity {
 		System.out.println("onCreate");
 		setContentView(R.layout.l_roster);
 		initializeLayout();
+		doStartService();
 		startTorService();
 	}
 	
@@ -89,7 +90,7 @@ public class TorChat extends SherlockActivity {
 	 * Start the Background service.
 	 */
 	private void doStartService() {
-		System.out.println("doStartService");
+		Log.i(LOG_TAG, "doStartService");
 		startService(new Intent(this, Backend.class));
 	}
 
@@ -128,13 +129,18 @@ public class TorChat extends SherlockActivity {
 		oh.requestHiddenServiceOnPort(this, port);
 	}
 	
+	protected void startPassOnionAddress(String myOnionAddress){
+		
+	}
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (data != null) {
 			String hs_host = data.getStringExtra(HOST_NAME);
 			setMyTorDomain(hs_host != null ? hs_host : "not defined");
 			Log.i("HOST_NAME", hs_host != null ? hs_host : "null");
-			doStartService();
-
+			Intent intent  = new Intent(this, Backend.class);
+			intent.putExtra(Backend.EXTRA_STRING_MY_ONION_ADDRESS, hs_host);
+			startService(intent);
 		}
 
 		if (requestCode == 1) {

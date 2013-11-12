@@ -18,7 +18,7 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 	private Reactor reactor;
 	private ListenPort listenPort;
 
-	private String mMyOnionAddress = "346kjb8yb343516fsnte";
+	private String mMyOnionAddress = null;
 	private String mMyRandomString = "213543857986565313";
 	
 	public Client(ClientHandler clientHandler, int port) throws IOException {
@@ -37,6 +37,11 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 		Log.i(LOG_TAG, "new connection was accepted");
 		Connection c = new Connection(tcp, this);
 		return c;
+	}
+	
+	public void setMyOnionAddress(String onionAddress){
+		Log.i(LOG_TAG + "setMyOnionAddress", "my onion address is " + onionAddress);
+		mMyOnionAddress = onionAddress;
 	}
 
 	public void startConnection(String onionAddress) throws IOException {

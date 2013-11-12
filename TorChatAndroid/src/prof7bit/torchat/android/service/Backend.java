@@ -24,6 +24,7 @@ public class Backend extends Service implements ClientHandler {
 
 	public final static String ACTION_OPEN_CONNECTION = "prof7bit.torchat.android.service.Backend.OPEN_CONNECTION";
 	public final static String EXTRA_STRING_ONION_ADDRESS = "prof7bit.torchat.android.service.Backend.EXTRA_ONION_ADDRESS";
+	public final static String EXTRA_STRING_MY_ONION_ADDRESS = "prof7bit.torchat.android.service.Backend.EXTRA_MY_ONION_ADDRESS";
 	
 	private NotificationManager nMgr;
 	private int NOTIFICATION = 10429; // Any unique number for this notification
@@ -72,6 +73,7 @@ public class Backend extends Service implements ClientHandler {
 
 	@Override
 	public void onCreate() {
+		Log.i(LOG_TAG, "service created");
 		nMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 		PrintlnRedirect.Install("TorChat");
@@ -111,6 +113,8 @@ public class Backend extends Service implements ClientHandler {
 
 	@Override
 	public void onStart(final Intent intent, int startid) {
+		if(intent == null)
+			return;
 		//request for open new connection
 		if(intent.getAction() == ACTION_OPEN_CONNECTION){
 			if(intent.getStringExtra(EXTRA_STRING_ONION_ADDRESS) != null)
@@ -119,7 +123,11 @@ public class Backend extends Service implements ClientHandler {
 					@Override
 					public void run() {
 						try {
-							client.startConnection(intent.getStringExtra(EXTRA_STRING_ONION_ADDRESS));
+							String onionAddress = intent.getStringExtra(EXTRA_STRING_ONION_ADDRESS);
+							if(onionAddress != null)
+								client.startConnection(onionAddress);
+							else
+								Log.w(LOG_TAG, "onion address is null");
 						} catch (IOException e) {
 							e.printStackTrace();
 						}		
@@ -129,6 +137,13 @@ public class Backend extends Service implements ClientHandler {
 			else
 				Log.w(LOG_TAG, "extra 'onion address' is null");
 		}
+		
+		/*if intent includes onion address, add it to client
+		 * TODO it is spike yet
+		 */
+		if (intent.getStringExtra(EXTRA_STRING_MY_ONION_ADDRESS) != null)
+			if (client != null)
+				client.setMyOnionAddress(intent.getStringExtra(EXTRA_STRING_MY_ONION_ADDRESS));
 	}
 
 	/**
