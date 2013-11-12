@@ -2,6 +2,8 @@ package prof7bit.torchat.core;
 
 import java.io.EOFException;
 
+import android.util.Log;
+
 /**
  * This class handles the protocol message "message"
  * 
@@ -32,7 +34,7 @@ public class Msg_message extends Msg {
 			 * spike yet
 			 */
 			while(true)
-				mMessage += buf.readString();
+				mMessage += buf.readString() + " ";
 
 		} catch (EOFException e) {
 			
@@ -54,7 +56,6 @@ public class Msg_message extends Msg {
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
 		mConnection.onMessageReceived(this);
 	}
 	

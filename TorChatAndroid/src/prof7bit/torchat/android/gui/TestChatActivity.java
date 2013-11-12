@@ -42,7 +42,7 @@ public class TestChatActivity extends Activity implements MessageListener, OnCli
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			
 			mBackend = ((Backend.LocalBinder)service).getService();
-			
+			mBackend.addListener(TestChatActivity.this);
 		}
 	};
 	
@@ -100,9 +100,15 @@ public class TestChatActivity extends Activity implements MessageListener, OnCli
 	}
 
 	@Override
-	public void onMessage(String message) {
+	public void onMessage(final String message) {
+		runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				addMessageToChat(message, false);
+			}
+		});
 		
-		tvChat.append(message);
 	}
 	
 	void doBindService() {
@@ -113,10 +119,19 @@ public class TestChatActivity extends Activity implements MessageListener, OnCli
 
 	void doUnbindService() {
 	    if (mIsBound) {
-	       
+
 	        unbindService(mConnection);
 	        mIsBound = false;
 	    }
+	}
+	
+	void addMessageToChat(String message, boolean isMy){
+		if(isMy)
+			message = "-->" + message;
+		else
+			message = "<--" + message;
+		
+		tvChat.append("\r\n" + message);	
 	}
 
 	@Override
@@ -126,13 +141,23 @@ public class TestChatActivity extends Activity implements MessageListener, OnCli
 			Log.w(LOG_TAG + "/onClick", "text is empty. hellow string will be sended");
 		else
 			text = etSend.getText().toString();
+		
+		addMessageToChat(text, true);
+		
+		//clear Edit text
+		etSend.getText().clear();
+		
 		if(user != null)
 			if(mBackend != null)
 				mBackend.sendMessage(user, text);
-			else
+			else{
 				Log.w(LOG_TAG + "onClick", "mBackend is null");
-		else
+				addMessageToChat("error", true);
+			}
+		else{
 			Log.w(LOG_TAG + "onClick", "user is null");
+			addMessageToChat("error", true);
+		}
 	}
 	
 
