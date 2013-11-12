@@ -77,6 +77,8 @@ public class TestChatActivity extends Activity implements MessageListener, OnCli
 	
 	@Override
 	protected void onPause() {
+		if(mBackend != null)
+			mBackend.removeListener(TestChatActivity.this);
 		doUnbindService();
 		super.onPause();
 	}

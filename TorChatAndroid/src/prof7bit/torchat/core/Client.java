@@ -141,6 +141,7 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 	 */
 	@Override
 	public void onConnect(Connection connection) {
+		Log.i(LOG_TAG + "/onConnect", "onConnect");
 		startHandshake(connection);
 	}
 

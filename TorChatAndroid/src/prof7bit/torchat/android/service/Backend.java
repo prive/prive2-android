@@ -88,7 +88,7 @@ public class Backend extends Service implements ClientHandler {
 	}
 
 	public void removeListener(MessageListener listener) {
-		
+		Log.i(LOG_TAG, "removeListener");
 		listListeners.remove(listener);
 		
 	}
