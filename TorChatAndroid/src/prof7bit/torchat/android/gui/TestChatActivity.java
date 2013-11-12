@@ -39,6 +39,7 @@ public class TestChatActivity extends Activity implements MessageListener{
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			
 			mBackend = ((Backend.LocalBinder)service).getService();
+			mBackend.addListener(TestChatActivity.this);
 			
 		}
 	};
