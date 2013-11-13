@@ -81,7 +81,7 @@ public class DBManager {
 			if (c.getCount() > 0) {
 				
 				while(c.moveToNext())
-					result.add(new Contact(c.getString(FIELD_NICKNAME_INDEX),c.getString(FIELD_ONION_ADDRESS_INDEX)));
+					result.add(new Contact(c.getString(FIELD_ONION_ADDRESS_INDEX),c.getString(FIELD_NICKNAME_INDEX)));
 				c.close();
 				closeDatabase();
 				return result;

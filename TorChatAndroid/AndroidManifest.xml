@@ -30,6 +30,11 @@
             android:name="prof7bit.torchat.android.gui.TestChatActivity"
             android:label="@string/app_name">
         </activity>
+        
+        <activity
+            android:name="prof7bit.torchat.android.gui.AddUserActivity"
+            android:label="@string/app_name">
+        </activity>
 
         <service android:name="prof7bit.torchat.android.service.Backend" >
         </service>
