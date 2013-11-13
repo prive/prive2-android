@@ -50,7 +50,7 @@ public class Msg_status extends Msg {
 		//write status
 		writeStatus(mb);
 		
-		return null;
+		return mb;
 	}
 
 	@Override

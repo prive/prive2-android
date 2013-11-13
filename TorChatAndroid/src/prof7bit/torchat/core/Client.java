@@ -170,13 +170,23 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 		// set handshake state to start
 		connection.handshakeState = Connection.HandshakeState.START;
 
-		// send ping foor notify recepient of starting handshake
+		// send ping for notify recipient of starting handshake
 		Msg_ping msgPing = new Msg_ping(connection);
 		msgPing.setOnionAddress(mMyOnionAddress);
 		msgPing.setRandomString(mMyRandomString);
 		connection.sendMessage(msgPing);
+		
+		//send message "status" for appearing online
+		Msg_status msgStatus = new Msg_status(connection);
+		msgStatus.setAvailiable();
+		connection.sendMessage(msgStatus);
 	}
 	
+	/**
+	 * Function sends message for certain connection given by onion address
+	 * @param onionAddress
+	 * @param textMessage
+	 */
 	public void sendMessage(String onionAddress, String textMessage){
 		Connection connection = getConnectionByOnionAddress(onionAddress);
 		if (connection != null){
