@@ -63,8 +63,11 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 		Connection connection = msg.getConnection();
 		Log.i(LOG_TAG + "/onPingReceived",
 				(connection.type == Connection.Type.INCOMING ? "incoming"
-						: "outcoming") + " ping " + msg.getOnionAddress() + " "
-								+ msg.getRandomString());
+						: "outcoming")
+						+ " ping "
+						+ msg.getOnionAddress()
+						+ " "
+						+ msg.getRandomString());
 		clientHandler.onStartHandshake(msg.getOnionAddress(),
 				msg.getRandomString());
 
@@ -92,6 +95,10 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 			Msg_status msgStatus = new Msg_status(connection);
 			msgStatus.setAvailiable();
 			connection.sendMessage(msgStatus);
+			
+			// send message "version" for appearing online
+			Msg_version msgVersion = new Msg_version(connection);
+			connection.sendMessage(msgVersion);
 
 		} else if (connection.type == Connection.Type.OUTCOMING) {
 			/*
@@ -111,19 +118,15 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 	@Override
 	public void onPongReceived(Msg_pong msg) {
 		Connection connection = msg.getConnection();
-		Log.i(LOG_TAG, (connection.type == Connection.Type.INCOMING ? "incoming"
-				: "outcoming") + " pong " + msg.getRandomString());
+		Log.i(LOG_TAG,
+				(connection.type == Connection.Type.INCOMING ? "incoming"
+						: "outcoming") + " pong " + msg.getRandomString());
 		// check is random string is my random string
 		if (msg.getRandomString().equals(mMyRandomString)) {
 			/*
 			 * if it is my string handshake is complete need to notify client
 			 * handler if it is outgoing connection need to send pong
 			 */
-
-			Log.i(LOG_TAG + "onPong",
-					"con number = " + connection.number + " onionaddress"
-							+ connection.recipietnOnionAddress != null ? connection.recipietnOnionAddress
-							: "undefined");
 
 			clientHandler.onHandshakeComplete(connection.recipietnOnionAddress);
 
@@ -194,6 +197,10 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 		Msg_status msgStatus = new Msg_status(connection);
 		msgStatus.setAvailiable();
 		connection.sendMessage(msgStatus);
+
+		// send message "version" for appearing online
+		Msg_version msgVersion = new Msg_version(connection);
+		connection.sendMessage(msgVersion);
 	}
 
 	/**

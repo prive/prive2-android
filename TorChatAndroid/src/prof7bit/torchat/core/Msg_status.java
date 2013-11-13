@@ -19,7 +19,7 @@ public class Msg_status extends Msg {
 	
 	final static String STATUS_AVAILABLE = "available";
 	final static String STATUS_AWAY = "away";
-	final static String STATUS_EXTENDED_AWAY= "xa";
+	final static String STATUS_EXTENDED_AWAY = "xa";
 	final static String STATUS_UNDEFINED = "undefined";
 	
 	String mStatus = STATUS_UNDEFINED;
@@ -55,7 +55,6 @@ public class Msg_status extends Msg {
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
 		mConnection.onStatusReceived(this);
 	}
 	
