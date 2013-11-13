@@ -63,6 +63,10 @@ public class Msg_status extends Msg {
 		buffer.writeString(mStatus != null ? mStatus : STATUS_UNDEFINED);
 	}
 	
+	public void setAvailiable(){
+		mStatus = STATUS_AVAILIABLE;
+	}
+	
 	/*********************
 	 * GETTERS AND SETTERS
 	 ********************/

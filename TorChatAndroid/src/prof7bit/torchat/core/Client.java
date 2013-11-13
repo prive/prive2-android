@@ -77,6 +77,11 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 			msgPing.setOnionAddress(mMyOnionAddress);
 			msgPing.setRandomString(mMyRandomString);
 			connection.sendMessage(msgPing);
+			
+			//send message "status"
+			Msg_status msgStatus = new Msg_status(connection);
+			msgStatus.setAvailiable();
+			connection.sendMessage(msgStatus);
 
 			// send message 'pong"
 			Msg_pong msgPong = new Msg_pong(connection);
