@@ -17,7 +17,7 @@ import java.io.EOFException;
 public class Msg_status extends Msg {
 	final static String MSG_COMMAND = "status";
 	
-	final static String STATUS_AVAILIABLE = "availiable";
+	final static String STATUS_AVAILABLE = "available";
 	final static String STATUS_AWAY = "away";
 	final static String STATUS_EXTENDED_AWAY= "xa";
 	final static String STATUS_UNDEFINED = "undefined";
@@ -64,7 +64,7 @@ public class Msg_status extends Msg {
 	}
 	
 	public void setAvailiable(){
-		mStatus = STATUS_AVAILIABLE;
+		mStatus = STATUS_AVAILABLE;
 	}
 	
 	/*********************

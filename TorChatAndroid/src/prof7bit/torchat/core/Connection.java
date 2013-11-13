@@ -17,6 +17,8 @@ import android.util.Log;
  *
  */
 public class Connection implements TCPHandler{
+	static int count = 0;
+	public int number;
 	/**
 	 * ConnectionType is enum for understanding incoming or outcoming connection is
 	 */
@@ -34,7 +36,7 @@ public class Connection implements TCPHandler{
 	private ConnectionHandler mConnectionHandler= null;
 	public Type type;
 	public HandshakeState handshakeState;
-	public String recepietnOnionAddress = null;
+	public String recipietnOnionAddress = null;
 	
 	public void send(MessageBuffer b){
 		tcp.send(b.encodeForSending());
@@ -50,12 +52,14 @@ public class Connection implements TCPHandler{
 	public Connection(TCP c){
 		tcp = c;
 		type = Type.INCOMING;
+		number = count ++;
 	}
 	
 	public Connection (TCP c, ConnectionHandler connectionHandler){
 		tcp = c;
 		mConnectionHandler = connectionHandler;
 		type = Type.INCOMING;
+		number = count ++;
 	}
 	
 	/**
@@ -74,6 +78,7 @@ public class Connection implements TCPHandler{
 		tcp = new TCP(r, addr, port, this, "127.0.0.1", 9050, "TorChat");
 		type = Type.OUTCOMING;
 		mConnectionHandler = connectionHandler;
+		number = count ++;
 	}
 
 	@Override
@@ -202,7 +207,7 @@ public class Connection implements TCPHandler{
 	
 	
 	public void onPingReceived(Msg_ping message){
-		recepietnOnionAddress = message.getOnionAddress();
+		recipietnOnionAddress = message.getOnionAddress();
 		mConnectionHandler.onPingReceived(message);
 	}
 	
