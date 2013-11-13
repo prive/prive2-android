@@ -11,21 +11,26 @@
         >
 
         <ImageView 
+            android:src="@drawable/face_red"
             android:id="@+id/iv_contact_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
+        	android:layout_margin="5dip"    
             />
         <TextView
             android:id="@+id/tv_contact_name"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip"
             />
         <CheckBox
             android:id="@+id/cb_contact"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
+            android:background="@drawable/mark_x"
+            android:layout_margin="5dip" 
             />
     </LinearLayout>
     <LinearLayout 
@@ -39,11 +44,15 @@
             android:id="@+id/btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/delete"
+            android:layout_margin="5dip"
             />
         <Button 
             android:id="@+id/btn_block"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/block"
+            android:layout_margin="5dip"
             />
         
     </LinearLayout>
