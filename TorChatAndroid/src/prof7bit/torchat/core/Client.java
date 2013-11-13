@@ -55,6 +55,8 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 				TORCHAT_DEFAULT_PORT, this);
 		c.recipientOnionAddress = onionAddress;
 		addNewConnection(c);
+		/* send ping message for 
+		 */
 		startHandshake(c);
 
 	}
@@ -73,9 +75,6 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 
 		clientHandler.onStartHandshake(msg.getOnionAddress(),
 				msg.getRandomString());
-
-		Connection outComingConnection = getConnectionByOnionAddress(
-				connection.recipientOnionAddress, Connection.Type.OUTCOMING);
 
 		if (connection.type == Connection.Type.INCOMING) {
 			/*
@@ -191,7 +190,7 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 	@Override
 	public void onConnect(Connection connection) {
 		Log.i(LOG_TAG + "/onConnect", "onConnect");
-		// startHandshake(connection);
+//		startHandshake(connection);
 	}
 
 	/**

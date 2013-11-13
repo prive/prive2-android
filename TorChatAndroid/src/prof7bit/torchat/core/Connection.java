@@ -90,6 +90,7 @@ public class Connection implements TCPHandler{
 	@Override
 	public void onDisconnect(Exception e) {
 		System.out.println("Connection.onDisconnect: " + e.toString());
+		Log.i(LOG_TAG + "onDisconnect", this.type == Connection.Type.INCOMING ? "incoming" : "outcoming");
 		mConnectionHandler.onDisconnect(e.toString());
 	}
 
