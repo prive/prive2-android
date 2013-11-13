@@ -213,4 +213,8 @@ public class Connection implements TCPHandler{
 	public void onMessageReceived(Msg_message message){
 		mConnectionHandler.onMessageReceived(message);
 	}
+	
+	public void onStatusReceived(Msg_status message){
+		mConnectionHandler.onStatusReceived(message);
+	}
 }

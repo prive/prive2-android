@@ -56,7 +56,7 @@ public class Msg_status extends Msg {
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-
+		mConnection.onStatusReceived(this);
 	}
 	
 	protected void writeStatus(MessageBuffer buffer){
@@ -67,7 +67,7 @@ public class Msg_status extends Msg {
 	 * GETTERS AND SETTERS
 	 ********************/
 	
-	protected String getStatus() {
+	public String getStatus() {
 		return mStatus;
 	}
 

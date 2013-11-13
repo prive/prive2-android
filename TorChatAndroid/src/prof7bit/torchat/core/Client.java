@@ -130,6 +130,17 @@ public class Client extends ConnectionManager implements ListenPortHandler, Conn
 			Log.w(LOG_TAG + "onMessageReceived", "onionAddress of recepient is null");
 
 	}
+	
+	@Override
+	public void onStatusReceived(Msg_status msg) {
+		Log.i(LOG_TAG + "onStatusReceived", "status-message was received");
+		String onionAddress = msg.getConnection().recepietnOnionAddress;
+		if(onionAddress != null)
+			clientHandler.onMessage(onionAddress, msg.getStatus());
+		else
+			Log.w(LOG_TAG + "onMessageReceived", "onionAddress of recepient is null");
+		
+	}
 
 	@Override
 	public void onDisconnect(String reason) {
