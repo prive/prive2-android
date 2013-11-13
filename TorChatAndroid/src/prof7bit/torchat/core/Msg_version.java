@@ -25,7 +25,7 @@ public class Msg_version extends Msg {
 		
 		writeVersion(mb);
 		
-		return null;
+		return mb;
 	}
 	
 	protected void writeVersion(MessageBuffer buffer){
