@@ -53,7 +53,9 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 		Connection c;
 		c = new Connection(new Reactor(), onionAddress + ONION_DOMAIN,
 				TORCHAT_DEFAULT_PORT, this);
+		c.recipientOnionAddress = onionAddress;
 		addNewConnection(c);
+		startHandshake(c);
 
 	}
 
@@ -68,17 +70,22 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 						+ msg.getOnionAddress()
 						+ " "
 						+ msg.getRandomString());
+
 		clientHandler.onStartHandshake(msg.getOnionAddress(),
 				msg.getRandomString());
+
+		Connection outComingConnection = getConnectionByOnionAddress(
+				connection.recipientOnionAddress, Connection.Type.OUTCOMING);
 
 		if (connection.type == Connection.Type.INCOMING) {
 			/*
 			 * if it is incoming connection handshake is starting since this
-			 * moment send ping pong TODO send status, version
+			 * moment send ping pong
 			 */
 
 			// set handshake state to start
-			connection.handshakeState = Connection.HandshakeState.START;
+			if (connection.handshakeState != Connection.HandshakeState.SUCCESS)
+				connection.handshakeState = Connection.HandshakeState.START;
 
 			// send message "ping"
 			Msg_ping msgPing = new Msg_ping(connection);
@@ -95,7 +102,7 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 			Msg_status msgStatus = new Msg_status(connection);
 			msgStatus.setAvailiable();
 			connection.sendMessage(msgStatus);
-			
+
 			// send message "version" for appearing online
 			Msg_version msgVersion = new Msg_version(connection);
 			connection.sendMessage(msgVersion);
@@ -103,13 +110,22 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 		} else if (connection.type == Connection.Type.OUTCOMING) {
 			/*
 			 * if it is outcoming connection handshake not change need to send
-			 * pong TODO may these packets is not enough
+			 * pong, status, version
 			 */
 
 			// send "pong"
 			Msg_pong msgPong = new Msg_pong(connection);
 			msgPong.setRandomString(msg.getRandomString());
 			connection.sendMessage(msgPong);
+
+			// send message "status"
+			Msg_status msgStatus = new Msg_status(connection);
+			msgStatus.setAvailiable();
+			connection.sendMessage(msgStatus);
+
+			// send message "version" for appearing online
+			Msg_version msgVersion = new Msg_version(connection);
+			connection.sendMessage(msgVersion);
 		} else
 			Log.w(LOG_TAG, "undefined connection type");
 
@@ -128,7 +144,7 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 			 * handler if it is outgoing connection need to send pong
 			 */
 
-			clientHandler.onHandshakeComplete(connection.recipietnOnionAddress);
+			clientHandler.onHandshakeComplete(connection.recipientOnionAddress);
 
 			// set handshake state to success
 			connection.handshakeState = Connection.HandshakeState.SUCCESS;
@@ -142,7 +158,7 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 	@Override
 	public void onMessageReceived(Msg_message msg) {
 		Log.i(LOG_TAG + "onMessageReceived", "message was received");
-		String onionAddress = msg.getConnection().recipietnOnionAddress;
+		String onionAddress = msg.getConnection().recipientOnionAddress;
 		if (onionAddress != null)
 			clientHandler.onMessage(onionAddress, msg.getMessage());
 		else
@@ -154,7 +170,7 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 	@Override
 	public void onStatusReceived(Msg_status msg) {
 		Log.i(LOG_TAG + "onStatusReceived", "status-message was received");
-		String onionAddress = msg.getConnection().recipietnOnionAddress;
+		String onionAddress = msg.getConnection().recipientOnionAddress;
 		if (onionAddress != null)
 			clientHandler.onMessage(onionAddress, "<-s-" + msg.getStatus());
 		else
@@ -175,7 +191,7 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 	@Override
 	public void onConnect(Connection connection) {
 		Log.i(LOG_TAG + "/onConnect", "onConnect");
-		startHandshake(connection);
+		// startHandshake(connection);
 	}
 
 	/**
@@ -193,14 +209,6 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 		msgPing.setRandomString(mMyRandomString);
 		connection.sendMessage(msgPing);
 
-		// send message "status" for appearing online
-		Msg_status msgStatus = new Msg_status(connection);
-		msgStatus.setAvailiable();
-		connection.sendMessage(msgStatus);
-
-		// send message "version" for appearing online
-		Msg_version msgVersion = new Msg_version(connection);
-		connection.sendMessage(msgVersion);
 	}
 
 	/**
@@ -210,7 +218,8 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 	 * @param textMessage
 	 */
 	public void sendMessage(String onionAddress, String textMessage) {
-		Connection connection = getConnectionByOnionAddress(onionAddress);
+		Connection connection = getConnectionByOnionAddress(onionAddress,
+				Connection.Type.OUTCOMING);
 		if (connection != null) {
 			Msg_message message = new Msg_message(connection);
 			message.setMessage(textMessage);

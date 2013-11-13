@@ -1,6 +1,7 @@
 package prof7bit.torchat.core;
 
 import java.io.EOFException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * This class handles the protocol message "status"
@@ -59,7 +60,13 @@ public class Msg_status extends Msg {
 	}
 	
 	protected void writeStatus(MessageBuffer buffer){
-		buffer.writeString(mStatus != null ? mStatus : STATUS_UNDEFINED);
+		String statusASCI = STATUS_UNDEFINED;
+		try {
+			statusASCI = new String(mStatus.getBytes(), "windows-1251");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		buffer.writeString(statusASCI);
 	}
 	
 	public void setAvailiable(){

@@ -5,8 +5,6 @@ import java.util.List;
 
 import android.util.Log;
 
-import prof7bit.reactor.ListenPortHandler;
-
 public class ConnectionManager {
 	final static String LOG_TAG = "ConnectionManager";
 
@@ -20,14 +18,14 @@ public class ConnectionManager {
 		mConnections.add(connection);
 	}
 	
-	protected Connection getConnectionByOnionAddress(String onionAddress){
+	protected Connection getConnectionByOnionAddress(String onionAddress, Connection.Type type){
 		if(onionAddress == null){
 			Log.e(LOG_TAG, "onion address is null");
 			return null;
 		}
 		for(Connection connection : mConnections){
-			if(connection.recipietnOnionAddress != null){
-				if(connection.recipietnOnionAddress.equals(onionAddress)){
+			if(connection.recipientOnionAddress != null){
+				if(connection.recipientOnionAddress.equals(onionAddress) && type == connection.type){
 					Log.i(LOG_TAG + "/getConnectionByOnionAddress", "Connection was found");
 					return connection;
 				}
