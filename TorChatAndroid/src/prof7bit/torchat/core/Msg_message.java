@@ -13,7 +13,7 @@ import android.util.Log;
  * am Alice! <message-text>
  * ******************************
  * 
- * @author busylee
+ * @author busylee demonlee999@gmail.com
  * 
  */
 public class Msg_message extends Msg {
