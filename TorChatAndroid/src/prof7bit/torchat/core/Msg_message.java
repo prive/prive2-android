@@ -56,6 +56,7 @@ public class Msg_message extends Msg {
 
 	@Override
 	public void execute() {
+		Log.i("Msg_message", "text message execute");
 		mConnection.onMessageReceived(this);
 	}
 	

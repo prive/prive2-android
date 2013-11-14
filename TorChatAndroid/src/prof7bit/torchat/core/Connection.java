@@ -217,6 +217,7 @@ public class Connection implements TCPHandler{
 	}
 	
 	public void onMessageReceived(Msg_message message){
+		Log.i(LOG_TAG + "onMessageReceived", "new text message was received");
 		mConnectionHandler.onMessageReceived(message);
 	}
 	
