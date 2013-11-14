@@ -18,6 +18,7 @@
         	android:layout_margin="5dip"    
             />
         <TextView
+            
             android:id="@+id/tv_contact_name"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -26,10 +27,13 @@
             android:layout_marginBottom="5dip"
             />
         <CheckBox
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            
             android:id="@+id/cb_contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/mark_x"
+            android:button="@drawable/mark_x"
             android:layout_margin="5dip" 
             />
     </LinearLayout>

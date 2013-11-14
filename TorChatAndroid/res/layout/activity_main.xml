@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <include layout="@layout/bar"/>
+    
   	<FrameLayout
             android:id="@+id/fl_content"
             android:layout_width="match_parent"
@@ -14,42 +16,60 @@
   	
  
   	    <RadioGroup
+  	        android:gravity="center"
   	        android:layout_width="match_parent" 
   	        android:layout_height="wrap_content"
   	        android:orientation="horizontal"
   	        >
-  	        <RadioButton 
+  	        <ru.dtlbox.torchat.customviews.CheckableImageButton
+  	            android:padding="5dip" 
+  	            android:layout_gravity="center"
   	            android:background="@drawable/menu_bg_x"
   	            android:gravity="center"
-  	            android:button="@drawable/chats_x"
+  	            android:src="@drawable/chats_x"
   	            android:checked="true"
   	            android:id="@+id/menu_1"
   	           	android:layout_width="0dip"
   	           	android:layout_height="wrap_content"
   	           	android:layout_weight="1"
-  	            />
-  	        <RadioButton
+  	           	/>
+  	        
+  	        <View android:layout_height="match_parent" android:layout_width="1dip" android:background="@color/white"/>
+  	        
+  	         <ru.dtlbox.torchat.customviews.CheckableImageButton
+  	            android:padding="5dip"
+  	            android:layout_gravity="center"
   	            android:background="@drawable/menu_bg_x" 
   	            android:gravity="center"
-  	            android:button="@drawable/contacts_x"
+  	            android:src="@drawable/contacts_x"
   	            android:id="@+id/menu_2"
   	           	android:layout_width="0dip"
   	           	android:layout_height="wrap_content"
   	           	android:layout_weight="1"
   	            />
-  	        <RadioButton 
+  	        
+  	        <View android:layout_height="match_parent" android:layout_width="1dip" android:background="@color/white"/>
+  	        
+  	        <ru.dtlbox.torchat.customviews.CheckableImageButton
+  	            android:padding="5dip"
+  	            android:layout_gravity="center"
   	            android:background="@drawable/menu_bg_x"
   	            android:gravity="center"
-  	            android:button="@drawable/timeline_x"
+  	            android:src="@drawable/timeline_x"
   	            android:id="@+id/menu_3"
   	           	android:layout_width="0dip"
   	           	android:layout_height="wrap_content"
   	           	android:layout_weight="1"
   	            />
-  	        <RadioButton 
+  	        
+  	        <View android:layout_height="match_parent" android:layout_width="1dip" android:background="@color/white"/>
+  	        
+  	        <ru.dtlbox.torchat.customviews.CheckableImageButton
+  	            android:padding="5dip"
+  	            android:layout_gravity="center"
   	            android:background="@drawable/menu_bg_x"
   	            android:gravity="center"
-  	            android:button="@drawable/profile_x"
+  	            android:src="@drawable/profile_x"
   	            android:id="@+id/menu_4"
   	           	android:layout_width="0dip"
   	           	android:layout_height="wrap_content"
