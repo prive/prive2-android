@@ -214,4 +214,10 @@ public class Backend extends Service implements ClientHandler {
             return Backend.this;
         }
     }
+
+	@Override
+	public void onStartChat(String user) {
+		// TODO implement
+		
+	}
 }

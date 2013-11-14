@@ -18,4 +18,6 @@ public interface ClientHandler {
 
 	public void onMessage(String user, String message);
 	
+	public void onStartChat(String user);
+	
 }

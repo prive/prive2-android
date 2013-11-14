@@ -5,8 +5,8 @@ import android.util.Log;
 public class Buddy implements ConnectionHandler {
 	final static String LOG_TAG = "Buddy";
 	
-	Connection incomingConnection = null;
-	Connection outcomingConnection = null;
+	Connection mIncomingConnection = null;
+	Connection mOutcomingConnection = null;
 	
 	String mOnionAddressRecepient = null;
 
@@ -50,6 +50,16 @@ public class Buddy implements ConnectionHandler {
 		
 	}
 	
+	public void addOutcomingConnection(Connection outcomingConnection){
+		/* TODO need to close connection
+		 * because we lost link to this object now,
+		 * socket must be closed,
+		 * check f connection not null 
+		 */
+		mOutcomingConnection = outcomingConnection;
+		mOutcomingConnection.setConnectionHandler(this);
+	}
+	
 	/**
 	 * check is this buddy for given onion address
 	 * @param onionAddress
@@ -67,6 +77,39 @@ public class Buddy implements ConnectionHandler {
 			return false;
 		}
 		return mOnionAddressRecepient.equals(onionAddress);
+	}
+	
+	/**
+	 * check there is outcoming connection for this buddy
+	 * TODO may be need to change this logic, connection may be closed already,
+	 * or refused
+	 * @return
+	 */
+	public boolean hasOutComingConnection(){
+		return mOutcomingConnection != null;
+	}
+	
+	/**
+	 * check there is incoming connection for this buddy
+	 * TODO may be need to change this logic, connection may be closed already,
+	 * or refused
+	 * @return
+	 */
+	public boolean hasInComingConnection(){
+		return mIncomingConnection != null;
+	}
+	
+	/**
+	 * check is buddy ready for chat.
+	 * I assume buddy is ready for chat if: 
+	 * it has 2 connections incoming and outcoming
+	 * it has onion address of recipient
+	 * handshake is complete
+	 * @return
+	 */
+	public boolean isReadyForChat(){
+		//TODO need to complete
+		return true;
 	}
 	
 	/*********************
