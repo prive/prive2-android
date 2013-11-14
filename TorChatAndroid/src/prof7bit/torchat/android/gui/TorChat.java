@@ -2,8 +2,6 @@ package prof7bit.torchat.android.gui;
 
 import info.guardianproject.onionkit.ui.OrbotHelper;
 
-import java.io.IOException;
-
 import prof7bit.torchat.android.R;
 import prof7bit.torchat.android.service.Backend;
 import prof7bit.torchat.android.service.PrintlnRedirect;
@@ -12,17 +10,11 @@ import prof7bit.torchat.android.service.PrintlnRedirect;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.FrameLayout;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 
@@ -49,7 +41,7 @@ public class TorChat extends SherlockFragmentActivity {
 		initializeLayout();
 		doStartService();
 		doRegisterEventListeners();
-		
+		startTorService();
 	}
 	
 	protected void initializeLayout(){
