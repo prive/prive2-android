@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+     <color name="white">#FFFFFF</color>
+     <color name="blue">#214887</color> <!-- TODO -->
+     <color name="dark_blue">#000B21</color> <!-- TODO -->
+</resources>

@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <include layout="@layout/bar"/>
+    
   	<FrameLayout
             android:id="@+id/fl_content"
             android:layout_width="match_parent"
@@ -12,13 +14,67 @@
     </FrameLayout>
     
   	
-  	<LinearLayout
-  	    android:layout_width="match_parent"
-  	    android:layout_height="wrap_content"
-  	    >
-  	    <View 
-  	        android:layout_height="40dip"
-  	        android:layout_width="1dip"
-  	        />
-	</LinearLayout>
+ 
+  	    <RadioGroup
+  	        android:gravity="center"
+  	        android:layout_width="match_parent" 
+  	        android:layout_height="wrap_content"
+  	        android:orientation="horizontal"
+  	        >
+  	        <ru.dtlbox.torchat.customviews.CheckableImageButton
+  	            android:padding="5dip" 
+  	            android:layout_gravity="center"
+  	            android:background="@drawable/menu_bg_x"
+  	            android:gravity="center"
+  	            android:src="@drawable/chats_x"
+  	            android:checked="true"
+  	            android:id="@+id/menu_1"
+  	           	android:layout_width="0dip"
+  	           	android:layout_height="wrap_content"
+  	           	android:layout_weight="1"
+  	           	/>
+  	        
+  	        <View android:layout_height="match_parent" android:layout_width="1dip" android:background="@color/white"/>
+  	        
+  	         <ru.dtlbox.torchat.customviews.CheckableImageButton
+  	            android:padding="5dip"
+  	            android:layout_gravity="center"
+  	            android:background="@drawable/menu_bg_x" 
+  	            android:gravity="center"
+  	            android:src="@drawable/contacts_x"
+  	            android:id="@+id/menu_2"
+  	           	android:layout_width="0dip"
+  	           	android:layout_height="wrap_content"
+  	           	android:layout_weight="1"
+  	            />
+  	        
+  	        <View android:layout_height="match_parent" android:layout_width="1dip" android:background="@color/white"/>
+  	        
+  	        <ru.dtlbox.torchat.customviews.CheckableImageButton
+  	            android:padding="5dip"
+  	            android:layout_gravity="center"
+  	            android:background="@drawable/menu_bg_x"
+  	            android:gravity="center"
+  	            android:src="@drawable/timeline_x"
+  	            android:id="@+id/menu_3"
+  	           	android:layout_width="0dip"
+  	           	android:layout_height="wrap_content"
+  	           	android:layout_weight="1"
+  	            />
+  	        
+  	        <View android:layout_height="match_parent" android:layout_width="1dip" android:background="@color/white"/>
+  	        
+  	        <ru.dtlbox.torchat.customviews.CheckableImageButton
+  	            android:padding="5dip"
+  	            android:layout_gravity="center"
+  	            android:background="@drawable/menu_bg_x"
+  	            android:gravity="center"
+  	            android:src="@drawable/profile_x"
+  	            android:id="@+id/menu_4"
+  	           	android:layout_width="0dip"
+  	           	android:layout_height="wrap_content"
+  	           	android:layout_weight="1"
+  	            />
+  	      </RadioGroup>
+  	
 </LinearLayout>

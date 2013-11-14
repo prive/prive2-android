@@ -25,6 +25,7 @@ public class ContactListFragment extends Fragment {
 	
 	DBManager mDbManager;
 	ListView lvContacts;
+	final String TITLE = "Contacts";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +61,8 @@ public class ContactListFragment extends Fragment {
 	
 	@Override
 	public void onResume() {
+		
+		getActivity().setTitle(TITLE);
 		List<Contact> contacts = mDbManager.getAllContact();
 		lvContacts.setAdapter(new ContactListAdapter(getActivity(), contacts));
 
