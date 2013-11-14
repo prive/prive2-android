@@ -57,7 +57,7 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 		addNewConnection(c);
 		/* send ping message for 
 		 */
-		startHandshake(c);
+//		startHandshake(c);
 
 	}
 
@@ -190,7 +190,7 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 	@Override
 	public void onConnect(Connection connection) {
 		Log.i(LOG_TAG + "/onConnect", "onConnect");
-//		startHandshake(connection);
+		startHandshake(connection);
 	}
 
 	/**
@@ -217,8 +217,7 @@ public class Client extends ConnectionManager implements ListenPortHandler,
 	 * @param textMessage
 	 */
 	public void sendMessage(String onionAddress, String textMessage) {
-		Connection connection = getConnectionByOnionAddress(onionAddress,
-				Connection.Type.OUTCOMING);
+		Connection connection = getConnectionByOnionAddress(onionAddress);
 		if (connection != null) {
 			Msg_message message = new Msg_message(connection);
 			message.setMessage(textMessage);
