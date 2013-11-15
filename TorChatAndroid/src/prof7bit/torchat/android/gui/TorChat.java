@@ -40,7 +40,6 @@ public class TorChat extends SherlockFragmentActivity {
 		setContentView(R.layout.activity_main);
 		initializeLayout();
 		doStartService();
-		doRegisterEventListeners();
 		startTorService();
 	}
 	
@@ -86,15 +85,6 @@ public class TorChat extends SherlockFragmentActivity {
 		}).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		
 		return true;
-	}
-
-	private void doRegisterEventListeners() {
-		// findViewById(R.id.menu_quit).setOnClickListener(new OnClickListener()
-		// {
-		// public void onClick(View v) {
-		// doQuit();
-		// }
-		// });
 	}
 
 	@Override

@@ -18,7 +18,8 @@
         <activity
             android:name="prof7bit.torchat.android.gui.TorChat"
             android:label="@string/app_name"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,12 +29,14 @@
         
         <activity
             android:name="prof7bit.torchat.android.gui.TestChatActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
         </activity>
         
         <activity
             android:name="prof7bit.torchat.android.gui.AddUserActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
         </activity>
 
         <service android:name="prof7bit.torchat.android.service.Backend" >
