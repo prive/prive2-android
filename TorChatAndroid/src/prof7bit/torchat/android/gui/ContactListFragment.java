@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ public class ContactListFragment extends Fragment {
 	
 	DBManager mDbManager;
 	ListView lvContacts;
+	final String TITLE = "Contacts";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,13 +57,14 @@ public class ContactListFragment extends Fragment {
 				
 			}
 		});
-
 		
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 	
 	@Override
 	public void onResume() {
+		
+		getActivity().setTitle(TITLE);
 		List<Contact> contacts = mDbManager.getAllContact();
 		lvContacts.setAdapter(new ContactListAdapter(getActivity(), contacts));
 
