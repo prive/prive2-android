@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -54,7 +55,6 @@ public class ContactListFragment extends Fragment {
 				
 			}
 		});
-
 		
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}

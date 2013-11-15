@@ -41,6 +41,8 @@ public class TorChat extends SherlockFragmentActivity {
 	
 	CheckableGroup mCheckableGroup;
 	
+	FrameLayout flContent;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,7 +67,7 @@ public class TorChat extends SherlockFragmentActivity {
 		
 //		getSupportActionBar().setCustomView(R.layout.bar);
 //		getSupportActionBar().setIcon(R.drawable.arrow_left_blue);
-		FrameLayout flContent = (FrameLayout)findViewById(R.id.fl_content);
+		flContent = (FrameLayout)findViewById(R.id.fl_content);
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		ft.replace(R.id.fl_content, new ContactListFragment());
 		ft.commit();
@@ -76,13 +78,14 @@ public class TorChat extends SherlockFragmentActivity {
 		CheckableImageButton btnProfile = (CheckableImageButton)findViewById(R.id.menu_4);
 		
 		mCheckableGroup = new CheckableGroup(btnContact, btnChats, btnTimeline, btnProfile);
-		
+		btnContact.setChecked(true);
 		btnContact.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				mCheckableGroup.changeChecked((CheckableImageButton)v);
-				
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				ft.replace(R.id.fl_content, new ContactListFragment());
 			}
 		});
 		
@@ -109,7 +112,8 @@ public class TorChat extends SherlockFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				mCheckableGroup.changeChecked((CheckableImageButton)v);
-				
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				ft.replace(R.id.fl_content, new ProfileFragment());
 			}
 		});
 
