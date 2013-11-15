@@ -1,5 +1,16 @@
 package prof7bit.torchat.core;
 
+/**
+ * This class handles the protocol message "add_me"
+ * 
+ * ****************************** 
+ * "add_me" packet example:
+ * add_me
+ * ******************************
+ * 
+ * @author busylee demonlee999@gmail.com
+ * 
+ */
 public class Msg_add_me extends Msg {
 	final static String MSG_COMMAND = "add_me";
 

@@ -9,17 +9,23 @@ import prof7bit.reactor.TCP;
 import prof7bit.reactor.TCPHandler;
 import android.util.Log;
 
-public class Client extends ConnectionManager implements ListenPortHandler {
+/**
+ * This class manages all buddies
+ * 
+ * @author busylee demonlee999@gmail.com
+ */
+public class Client extends BuddyManager implements ListenPortHandler {
 	final static String LOG_TAG = "Client";
+	
+	public String mMyOnionAddress = null;
+	public String mMyRandomString = "213543857986565313";
+	
 	final static String ONION_DOMAIN = ".onion";
 	final static int TORCHAT_DEFAULT_PORT = 11009;
 
 	private ClientHandler clientHandler;
 	private Reactor reactor;
 	private ListenPort listenPort;
-
-	private String mMyOnionAddress = null;
-	private String mMyRandomString = "213543857986565313";
 
 	public Client(ClientHandler clientHandler, int port) throws IOException {
 		this.clientHandler = clientHandler;
@@ -35,10 +41,10 @@ public class Client extends ConnectionManager implements ListenPortHandler {
 	@Override
 	public TCPHandler onAccept(TCP tcp) {
 		Log.i(LOG_TAG, "new connection was accepted");
-		/* new connection has not onion address,
-		 * it appear to be visible after ping received
-		 * in connection class it will cause function for 
-		 * set certain ConnectionHandler for this connection
+		/*
+		 * new connection has not onion address, it appear to be visible after
+		 * ping received in connection class it will cause function for set
+		 * certain ConnectionHandler for this connection
 		 */
 		Connection c = new Connection(tcp, this);
 		addNewConnection(c);
@@ -53,20 +59,54 @@ public class Client extends ConnectionManager implements ListenPortHandler {
 	}
 
 	/**
+	 * Set handler for this connection
+	 * Find the buddy for this recipient by onionAddress.
+	 * If Buddy did not find, need to create new buddy
+	 * @param connection
+	 */
+	public void setConnectionHandlerFor(Connection connection) {
+		//check if onion address for this connection was not define
+		if (connection.recipientOnionAddress == null){
+			Log.w(LOG_TAG, "recepient onion address is null");
+			return;
+		}
+		
+		//find buddy with this onion address
+		for (Buddy buddy : mBuddies){
+			if (buddy.isOnionAddressLike(connection.recipientOnionAddress)){
+				/*TODO may be here we can set up only incoming connections
+				 */
+				connection.setConnectionHandler(buddy);
+				Log.i(LOG_TAG, "buddy for this onion address was found");
+				return;
+			}
+		}
+		
+		Log.w(LOG_TAG, "buddy for this onion address was not found, create new buddy");
+		Buddy buddy = new Buddy(this);
+		connection.setConnectionHandler(buddy);
+		addNewBuddy(buddy);
+		
+	}
+	
+	/**
 	 * Function for request to open new connection on onion address
 	 * TODO Just spike yet, need to change in next time 
 	 * @param onionAddress
 	 * @throws IOException
 	 */
 	public void startConnection(String onionAddress) throws IOException {
-
+		//my onion address is important if null, we must return action
+		if (mMyOnionAddress == null){
+			Log.w(LOG_TAG, "myOnionAddress is null, start connection was rejected");
+		}
 		Log.i(LOG_TAG, "start connection request");
 
 		// check there is buddy for this onion address
 		Buddy buddy = getBuddyByOnionAddress(onionAddress);
 
 		if (buddy == null)
-			buddy = new Buddy();
+			buddy = new Buddy(this);
 
 		// I think it is spike
 		if (buddy.isReadyForChat()) {
@@ -83,8 +123,21 @@ public class Client extends ConnectionManager implements ListenPortHandler {
 					TORCHAT_DEFAULT_PORT, this);
 
 			c.recipientOnionAddress = onionAddress;
+			
+			//send ping
+			Msg_ping msgPing = new Msg_ping(c);
+			msgPing.setOnionAddress(mMyOnionAddress);
+			msgPing.setRandomString(mMyRandomString);
+			c.sendMessage(msgPing);
 
+			//store this connection in buddy
+			buddy.addOutcomingConnection(c);
+			
+			//store this buddy
+			addNewBuddy(buddy);
+			
 			addNewConnection(c);// TODO delete, i think no important now to store link of this object
+			
 		}
 
 	}

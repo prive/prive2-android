@@ -19,6 +19,10 @@ public class BuddyManager {
 	protected void addNewConnection(Connection connection) {
 		mConnections.add(connection);
 	}
+	
+	protected void addNewBuddy(Buddy buddy){
+		mBuddies.add(buddy);
+	}
 
 	/**
 	 * return buddy for passed onion address

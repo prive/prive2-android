@@ -40,7 +40,7 @@ public class Connection implements TCPHandler {
 	private TCP tcp;
 	private byte[] bufIncomplete = new byte[0];
 	private ConnectionHandler mConnectionHandler = null;
-	private BuddyManager mBuddyManager = null;
+	private Client mClient = null;
 	public Type type;
 	public HandshakeState handshakeState;
 	public String recipientOnionAddress = null;
@@ -63,9 +63,9 @@ public class Connection implements TCPHandler {
 		number = count++;
 	}
 
-	public Connection(TCP c, BuddyManager buddyManager) {
+	public Connection(TCP c, Client buddyManager) {
 		tcp = c;
-		mBuddyManager = buddyManager;
+		mClient = buddyManager;
 		type = Type.INCOMING;
 		number = count++;
 	}
@@ -87,10 +87,10 @@ public class Connection implements TCPHandler {
 	 *             problems opening the local socket (not the connection itself)
 	 */
 	public Connection(Reactor r, String addr, int port,
-			BuddyManager buddyManager) throws IOException {
+			Client buddyManager) throws IOException {
 		tcp = new TCP(r, addr, port, this, "127.0.0.1", 9050, "TorChat");
 		type = Type.OUTCOMING;
-		mBuddyManager = buddyManager;
+		mClient = buddyManager;
 		number = count++;
 	}
 
@@ -113,7 +113,7 @@ public class Connection implements TCPHandler {
 				this.type == Connection.Type.INCOMING ? "incoming"
 						: "outcoming");
 		if (mConnectionHandler != null)
-			mConnectionHandler.onDisconnect(e.toString());
+			mConnectionHandler.onDisconnect(this, e.toString());
 		else
 			Log.w(LOG_TAG, "mConnectionHandler is null");
 	}
@@ -219,6 +219,14 @@ public class Connection implements TCPHandler {
 			return new MsgUnknown(this);
 		}
 	}
+	
+	/**
+	 * return type of this connection in string format
+	 * @return
+	 */
+	public String getStringConnectionType(){
+		return type == Type.INCOMING ? "incoming" : "outcoming";
+	}
 
 	/**
 	 * set up connection handler for handling incoming protocol messages
@@ -249,6 +257,11 @@ public class Connection implements TCPHandler {
 
 	public void onPingReceived(Msg_ping message) {
 		recipientOnionAddress = message.getOnionAddress();
+		
+		//if ConnectionHandler is null try to set up connection handler
+		if (mConnectionHandler == null)
+			mClient.setConnectionHandlerFor(this);
+		
 		// TODO need to set up handler if it is not define
 		if (mConnectionHandler != null)
 			mConnectionHandler.onPingReceived(message);
