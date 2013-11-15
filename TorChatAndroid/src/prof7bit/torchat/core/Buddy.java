@@ -14,6 +14,18 @@ import android.util.Log;
  */
 public class Buddy implements ConnectionHandler {
 	final static String LOG_TAG = "Buddy";
+	
+	enum HandshakeStatus {
+		NOT_BEGIN,
+		PROCESS,
+		COMPLETE,
+		ABORTED
+	}
+	
+	enum Status {
+		OFFLINE,
+		ONLINE
+	}
 
 	Connection mIncomingConnection = null;
 	Connection mOutcomingConnection = null;
