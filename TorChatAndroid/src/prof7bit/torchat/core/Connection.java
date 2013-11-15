@@ -28,13 +28,6 @@ public class Connection implements TCPHandler {
 		INCOMING, OUTCOMING
 	}
 
-	/**
-	 * HandshakeState is enum for understanding state of handshake
-	 */
-	enum HandshakeState {
-		DEFAULT, START, SUCCESS, ABORT
-	}
-
 	final static String LOG_TAG = "Connection";
 
 	private TCP tcp;
@@ -42,7 +35,6 @@ public class Connection implements TCPHandler {
 	private ConnectionHandler mConnectionHandler = null;
 	private Client mClient = null;
 	public Type type;
-	public HandshakeState handshakeState;
 	public String recipientOnionAddress = null;
 
 	public void send(MessageBuffer b) {

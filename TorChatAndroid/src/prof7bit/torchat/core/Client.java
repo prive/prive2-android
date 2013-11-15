@@ -161,8 +161,6 @@ public class Client extends BeatHeart implements ListenPortHandler {
 	 * @param connection
 	 */
 	protected void startHandshake(Connection connection) {
-		// set handshake state to start
-		connection.handshakeState = Connection.HandshakeState.START;
 
 		// send ping for notify recipient of starting handshake
 		Msg_ping msgPing = new Msg_ping(connection);
