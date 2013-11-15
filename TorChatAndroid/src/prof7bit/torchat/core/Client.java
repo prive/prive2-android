@@ -128,6 +128,9 @@ public class Client extends BuddyManager implements ListenPortHandler {
 
 		//if buddy has not outcoming connection
 		if (!buddy.hasOutComingConnection()) {
+			
+			if (buddy.mOnionAddressRecepient == null)
+				buddy.mOnionAddressRecepient = onionAddress;
 
 			Connection c;
 
@@ -141,7 +144,7 @@ public class Client extends BuddyManager implements ListenPortHandler {
 			msgPing.setOnionAddress(mMyOnionAddress);
 			msgPing.setRandomString(mMyRandomString);
 			c.sendMessage(msgPing);
-
+			
 			//store this connection in buddy
 			buddy.addOutcomingConnection(c);
 			

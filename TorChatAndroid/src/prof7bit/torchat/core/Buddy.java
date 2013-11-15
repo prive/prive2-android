@@ -18,7 +18,7 @@ public class Buddy implements ConnectionHandler {
 	Connection mIncomingConnection = null;
 	Connection mOutcomingConnection = null;
 
-	String mOnionAddressRecepient = null;
+	public String mOnionAddressRecepient = null;
 
 	Client mClient = null;
 
@@ -126,8 +126,8 @@ public class Buddy implements ConnectionHandler {
 	}
 
 	protected void logInfo(String text) {
-		Log.i(LOG_TAG + mOnionAddressRecepient != null ? mOnionAddressRecepient
-				: "undefinedOnionAddress", text);
+		Log.i(LOG_TAG + "/" + (mOnionAddressRecepient != null ? mOnionAddressRecepient
+				: "undefinedOnionAddress"), text);
 	}
 
 	/**
