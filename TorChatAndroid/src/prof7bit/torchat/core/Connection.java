@@ -260,7 +260,7 @@ public class Connection implements TCPHandler {
 		
 		//if ConnectionHandler is null try to set up connection handler
 		if (mConnectionHandler == null)
-			mClient.setConnectionHandlerFor(this);
+			mClient.setConnectionHandlerForIncomingConnection(this);
 		
 		// TODO need to set up handler if it is not define
 		if (mConnectionHandler != null)

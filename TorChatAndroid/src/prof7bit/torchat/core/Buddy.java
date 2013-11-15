@@ -45,6 +45,9 @@ public class Buddy implements ConnectionHandler {
 				connection = new Connection(new Reactor(),
 						msg.getOnionAddress() + Client.ONION_DOMAIN,
 						Client.TORCHAT_DEFAULT_PORT, mClient);
+				
+				//store this conection
+				addOutcomingConnection(connection);
 
 				connection.recipientOnionAddress = msg.getOnionAddress();
 
@@ -122,7 +125,7 @@ public class Buddy implements ConnectionHandler {
 	public void onDisconnect(Connection connection, String reason) {
 		logInfo(connection.getStringConnectionType() + " onDisconnect: "
 				+ reason);
-
+		
 	}
 
 	protected void logInfo(String text) {

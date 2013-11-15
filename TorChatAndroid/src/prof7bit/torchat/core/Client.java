@@ -14,7 +14,7 @@ import android.util.Log;
  * 
  * @author busylee demonlee999@gmail.com
  */
-public class Client extends BuddyManager implements ListenPortHandler {
+public class Client extends BeatHeart implements ListenPortHandler {
 	final static String LOG_TAG = "Client";
 	
 	public String mMyOnionAddress = null;
@@ -64,7 +64,7 @@ public class Client extends BuddyManager implements ListenPortHandler {
 	 * If Buddy did not find, need to create new buddy
 	 * @param connection
 	 */
-	public void setConnectionHandlerFor(Connection connection) {
+	public void setConnectionHandlerForIncomingConnection(Connection connection) {
 		//check if onion address for this connection was not define
 		if (connection.recipientOnionAddress == null){
 			Log.w(LOG_TAG, "recepient onion address is null");
@@ -74,9 +74,7 @@ public class Client extends BuddyManager implements ListenPortHandler {
 		//find buddy with this onion address
 		for (Buddy buddy : mBuddies){
 			if (buddy.isOnionAddressLike(connection.recipientOnionAddress)){
-				/*TODO may be here we can set up only incoming connections
-				 */
-				connection.setConnectionHandler(buddy);
+				buddy.addIncomingConnection(connection);
 				Log.i(LOG_TAG, "buddy for this onion address was found");
 				return;
 			}
@@ -84,7 +82,7 @@ public class Client extends BuddyManager implements ListenPortHandler {
 		
 		Log.w(LOG_TAG, "buddy for this onion address was not found, create new buddy");
 		Buddy buddy = new Buddy(this);
-		connection.setConnectionHandler(buddy);
+		buddy.addIncomingConnection(connection);
 		addNewBuddy(buddy);
 		
 	}
@@ -156,140 +154,6 @@ public class Client extends BuddyManager implements ListenPortHandler {
 		}
 
 	}
-	
-	
-
-	// // TODO change logic
-	// @Override
-	// public void onPingReceived(Msg_ping msg) {
-	// Connection connection = msg.getConnection();
-	// Log.i(LOG_TAG + "/onPingReceived",
-	// (connection.type == Connection.Type.INCOMING ? "incoming"
-	// : "outcoming")
-//	 + " ping "
-//	 + msg.getOnionAddress()
-//	 + " "
-//	 + msg.getRandomString());
-	//
-	// clientHandler.onStartHandshake(msg.getOnionAddress(),
-	// msg.getRandomString());
-	//
-	// if (connection.type == Connection.Type.INCOMING) {
-	// /*
-	// * if it is incoming connection handshake is starting since this
-	// * moment send ping pong
-	// */
-	//
-	// // set handshake state to start
-	// if (connection.handshakeState != Connection.HandshakeState.SUCCESS)
-	// connection.handshakeState = Connection.HandshakeState.START;
-	//
-	// // send message "ping"
-	// Msg_ping msgPing = new Msg_ping(connection);
-	// msgPing.setOnionAddress(mMyOnionAddress);
-	// msgPing.setRandomString(mMyRandomString);
-	// connection.sendMessage(msgPing);
-	//
-	// // send message 'pong"
-	// Msg_pong msgPong = new Msg_pong(connection);
-	// msgPong.setRandomString(msg.getRandomString());
-	// connection.sendMessage(msgPong);
-	//
-	// // send message "status"
-	// Msg_status msgStatus = new Msg_status(connection);
-	// msgStatus.setAvailiable();
-	// connection.sendMessage(msgStatus);
-	//
-	// // send message "version" for appearing online
-	// Msg_version msgVersion = new Msg_version(connection);
-	// connection.sendMessage(msgVersion);
-	//
-	// } else if (connection.type == Connection.Type.OUTCOMING) {
-	// /*
-	// * if it is outcoming connection handshake not change need to send
-	// * pong, status, version
-	// */
-	//
-	// // send "pong"
-	// Msg_pong msgPong = new Msg_pong(connection);
-	// msgPong.setRandomString(msg.getRandomString());
-	// connection.sendMessage(msgPong);
-	//
-	// // send message "status"
-	// Msg_status msgStatus = new Msg_status(connection);
-	// msgStatus.setAvailiable();
-	// connection.sendMessage(msgStatus);
-	//
-	// // send message "version" for appearing online
-	// Msg_version msgVersion = new Msg_version(connection);
-	// connection.sendMessage(msgVersion);
-	// } else
-	// Log.w(LOG_TAG, "undefined connection type");
-	//
-	// }
-	//
-	// @Override
-	// public void onPongReceived(Msg_pong msg) {
-	// Connection connection = msg.getConnection();
-	// Log.i(LOG_TAG,
-	// (connection.type == Connection.Type.INCOMING ? "incoming"
-	// : "outcoming") + " pong " + msg.getRandomString());
-	// // check is random string is my random string
-	// if (msg.getRandomString().equals(mMyRandomString)) {
-	// /*
-	// * if it is my string handshake is complete need to notify client
-	// * handler if it is outgoing connection need to send pong
-	// */
-	//
-	// clientHandler.onHandshakeComplete(connection.recipientOnionAddress);
-	//
-	// // set handshake state to success
-	// connection.handshakeState = Connection.HandshakeState.SUCCESS;
-	//
-	// } else {
-	// Log.e(LOG_TAG, "string is not my string");
-	// clientHandler.onHandshakeAbort("string is not my string");
-	// }
-	// }
-	//
-	// @Override
-	// public void onMessageReceived(Msg_message msg) {
-	// Log.i(LOG_TAG + "onMessageReceived", "message was received");
-	// String onionAddress = msg.getConnection().recipientOnionAddress;
-	// if (onionAddress != null)
-	// clientHandler.onMessage(onionAddress, msg.getMessage());
-	// else
-	// Log.w(LOG_TAG + "onMessageReceived",
-	// "onionAddress of recepient is null");
-	//
-	// }
-	//
-	// @Override
-	// public void onStatusReceived(Msg_status msg) {
-	// Log.i(LOG_TAG + "onStatusReceived", "status-message was received");
-	// String onionAddress = msg.getConnection().recipientOnionAddress;
-	// if (onionAddress != null)
-	// clientHandler.onMessage(onionAddress, "<-s-" + msg.getStatus());
-	// else
-	// Log.w(LOG_TAG + "onMessageReceived",
-	// "onionAddress of recepient is null");
-	//
-	// }
-	//
-	// @Override
-	// public void onDisconnect(String reason) {
-	// // TODO implement
-	// }
-	//
-	// /**
-	// * This function will be called then connection will be established
-	// *
-	// */
-	// @Override
-	// public void onConnect(Connection connection) {
-	// Log.i(LOG_TAG + "/onConnect", "onConnect");
-	// // startHandshake(connection);
-	// }
 
 	/**
 	 * Function for start handshake process into establishing connection
