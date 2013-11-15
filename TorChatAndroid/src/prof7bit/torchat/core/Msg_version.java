@@ -5,7 +5,7 @@ import android.util.Log;
 public class Msg_version extends Msg {
 
 	final static String MSG_COMMAND = "version";
-	final static String VERSION = "1.0.0.0";
+	final static String VERSION = "0.9.9.287";
 	
 	public Msg_version(Connection connection) {
 		super(connection);
