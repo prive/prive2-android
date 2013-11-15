@@ -89,6 +89,18 @@ public class Client extends BuddyManager implements ListenPortHandler {
 		
 	}
 	
+	public void onMessage(String user, String message){
+		clientHandler.onMessage(user, message);
+	}
+	
+	/**
+	 * handle complete handshake in one of all buddies
+	 * @param user
+	 */
+	public void onChatEstablished(String user){
+		clientHandler.onStartChat(user);
+	}
+	
 	/**
 	 * Function for request to open new connection on onion address
 	 * TODO Just spike yet, need to change in next time 
@@ -141,6 +153,8 @@ public class Client extends BuddyManager implements ListenPortHandler {
 		}
 
 	}
+	
+	
 
 	// // TODO change logic
 	// @Override
@@ -149,10 +163,10 @@ public class Client extends BuddyManager implements ListenPortHandler {
 	// Log.i(LOG_TAG + "/onPingReceived",
 	// (connection.type == Connection.Type.INCOMING ? "incoming"
 	// : "outcoming")
-	// + " ping "
-	// + msg.getOnionAddress()
-	// + " "
-	// + msg.getRandomString());
+//	 + " ping "
+//	 + msg.getOnionAddress()
+//	 + " "
+//	 + msg.getRandomString());
 	//
 	// clientHandler.onStartHandshake(msg.getOnionAddress(),
 	// msg.getRandomString());

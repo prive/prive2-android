@@ -22,35 +22,74 @@ public class Buddy implements ConnectionHandler {
 
 	Client mClient = null;
 
+	boolean mHandshakeComlete = false;
+
 	public Buddy(Client client) {
 		mClient = client;
 	}
 
 	@Override
 	public void onPingReceived(Msg_ping msg) {
+		logInfo(" ping " + msg.getOnionAddress() + " " + msg.getRandomString());
 		// store onion address if null
 		if (mOnionAddressRecepient == null)
 			mOnionAddressRecepient = msg.getOnionAddress();
 
+		/*
+		 * if outcoming connection is null start new outcoming connection
+		 */
 		if (mOutcomingConnection == null) {
 			try {
-				Connection c;
+				Connection connection;
 
-				c = new Connection(new Reactor(), msg.getOnionAddress()
-						+ Client.ONION_DOMAIN, Client.TORCHAT_DEFAULT_PORT,
-						mClient);
+				connection = new Connection(new Reactor(),
+						msg.getOnionAddress() + Client.ONION_DOMAIN,
+						Client.TORCHAT_DEFAULT_PORT, mClient);
 
-				c.recipientOnionAddress = msg.getOnionAddress();
+				connection.recipientOnionAddress = msg.getOnionAddress();
 
 				// send ping
-				Msg_ping msgPing = new Msg_ping(c);
+				Msg_ping msgPing = new Msg_ping(connection);
 				msgPing.setOnionAddress(mClient.mMyOnionAddress);
 				msgPing.setRandomString(mClient.mMyRandomString);
-				c.sendMessage(msgPing);
+				connection.sendMessage(msgPing);
+
+				// send message 'pong"
+				Msg_pong msgPong = new Msg_pong(connection);
+				msgPong.setRandomString(msg.getRandomString());
+				connection.sendMessage(msgPong);
+
+				// send message "status"
+				Msg_status msgStatus = new Msg_status(connection);
+				msgStatus.setAvailiable();
+				connection.sendMessage(msgStatus);
+
+				// send message "version" for appearing online
+				Msg_version msgVersion = new Msg_version(connection);
+				connection.sendMessage(msgVersion);
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} // end if
+		else {
+			/*
+			 * if there is outcoming connection we must send "pong" first of all
+			 */
+			// send message 'pong"
+			Msg_pong msgPong = new Msg_pong(mOutcomingConnection);
+			msgPong.setRandomString(msg.getRandomString());
+			mOutcomingConnection.sendMessage(msgPong);
+
+			// send message "status"
+			Msg_status msgStatus = new Msg_status(mOutcomingConnection);
+			msgStatus.setAvailiable();
+			mOutcomingConnection.sendMessage(msgStatus);
+
+			// send message "version" for appearing online
+			Msg_version msgVersion = new Msg_version(mOutcomingConnection);
+			mOutcomingConnection.sendMessage(msgVersion);
 		}
 
 		logInfo("onPingReceived");
@@ -58,18 +97,20 @@ public class Buddy implements ConnectionHandler {
 
 	@Override
 	public void onPongReceived(Msg_pong msg) {
-		logInfo("onPongReceived");
+		logInfo(" pong " + msg.getRandomString());
+		mHandshakeComlete = true;
+		mClient.onChatEstablished(mOnionAddressRecepient);
 	}
 
 	@Override
 	public void onMessageReceived(Msg_message msg) {
 		logInfo("onMessageReceived");
+		mClient.onMessage(mOnionAddressRecepient, msg.getMessage());
 	}
 
 	@Override
 	public void onStatusReceived(Msg_status msg) {
 		logInfo("onStatusReceived");
-
 	}
 
 	@Override
@@ -166,8 +207,7 @@ public class Buddy implements ConnectionHandler {
 	 */
 	public boolean isReadyForChat() {
 		return hasInComingConnection() && hasOutComingConnection()
-				&& mOnionAddressRecepient != null; // TODO need to check
-													// handshake state
+				&& mOnionAddressRecepient != null && mHandshakeComlete;
 	}
 
 	/*********************

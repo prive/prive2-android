@@ -217,7 +217,6 @@ public class Backend extends Service implements ClientHandler {
 
 	@Override
 	public void onStartChat(String user) {
-		// TODO implement
-		
+		TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, "onStartChat");
 	}
 }
