@@ -18,12 +18,20 @@ public class DBManager {
 	public static final String DB_NAME = "APP_DATABASE";
 	
 	public static final String TABLE_CONTACTS_NAME = "contacts_table";
+	public static final String TABLE_USER_DATA_NAME = "user_data_table";
+	
 	public static final String FIELD_ONION_ADDRESS = "field_onion_adress";
 	public static final String FIELD_NICKNAME = "field_nickname";
 	
 	public static final String[] ALL_CONTACT_FIELDS = new String[] {FIELD_ONION_ADDRESS, FIELD_NICKNAME};
+	
 	public static final int FIELD_ONION_ADDRESS_INDEX = 0;
 	public static final int FIELD_NICKNAME_INDEX = 1;
+	
+	
+	public static int DATA_TIPE_STRING = 0;
+	public static int DATA_TIPE_INT = 1;
+	
 	
 	SQLiteDatabase database;
 	DBHelper mDBHelper;
@@ -147,6 +155,11 @@ public class DBManager {
 		}
 
 	}
+	
+	
+	
+	
+	
 	
 
 }

@@ -39,6 +39,8 @@ public class TorChat extends SherlockFragmentActivity {
 	final static String HOST_NAME = "hs_host";
 	final static int HS_PORT = 11009;
 	
+	public String onionAddress = "";
+	
 	CheckableGroup mCheckableGroup;
 	
 	FrameLayout flContent;
@@ -83,9 +85,12 @@ public class TorChat extends SherlockFragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				mCheckableGroup.changeChecked((CheckableImageButton)v);
-				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-				ft.replace(R.id.fl_content, new ContactListFragment());
+				
+					mCheckableGroup.changeChecked((CheckableImageButton)v);
+					FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+					ft.replace(R.id.fl_content, new ContactListFragment());
+					ft.commit();
+				
 			}
 		});
 		
@@ -93,16 +98,24 @@ public class TorChat extends SherlockFragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				mCheckableGroup.changeChecked((CheckableImageButton)v);
 				
-			}
+					mCheckableGroup.changeChecked((CheckableImageButton)v);
+					FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+					ft.replace(R.id.fl_content, new DrownFragment());
+					ft.commit();
+				}
+			
 		});
 		
 		btnTimeline.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				mCheckableGroup.changeChecked((CheckableImageButton)v);
+				
+					mCheckableGroup.changeChecked((CheckableImageButton)v);
+					FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+					ft.replace(R.id.fl_content, new DrownFragment());
+					ft.commit();
 				
 			}
 		});
@@ -111,9 +124,13 @@ public class TorChat extends SherlockFragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				mCheckableGroup.changeChecked((CheckableImageButton)v);
-				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-				ft.replace(R.id.fl_content, new ProfileFragment());
+				Log.d("profile","onClick");
+				
+					mCheckableGroup.changeChecked((CheckableImageButton)v);
+					FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+					ft.replace(R.id.fl_content, new ProfileFragment());
+					ft.commit();
+				
 			}
 		});
 
@@ -233,14 +250,17 @@ public class TorChat extends SherlockFragmentActivity {
 	}
 	
 	protected void setMyTorDomain(String hsHostName) {
-	 ((TextView)findViewById(R.id.tv_onion_adress)).setText(hsHostName);
-	 
+	 	onionAddress = hsHostName;
 	}
 	
 	@Override
 	public void setTitle(CharSequence title) {
 	
 	 ((TextView)findViewById(R.id.tv_title)).setText(title);
+	}
+	
+	public String getOnionAddress() {
+		return onionAddress;
 	}
 	
 }

@@ -76,8 +76,8 @@ public class TestChatActivity extends SherlockActivity implements MessageListene
 		btnSend = (Button)findViewById(R.id.btn_send);
 		
 		btnSend.setOnClickListener(this);
-		//chatAdapter = new ChatAdapter(TestChatActivity.this, listMessages);
-		chatAdapter = new ChatAdapter(TestChatActivity.this, ChatTestActivityDesingTest.generateMessages());
+		chatAdapter = new ChatAdapter(TestChatActivity.this, listMessages);
+		//chatAdapter = new ChatAdapter(TestChatActivity.this, ChatTestActivityDesingTest.generateMessages());
 		lvChat.setAdapter(chatAdapter);
 		
 		if(getIntent().getExtras()!=null) {
@@ -114,7 +114,8 @@ public class TestChatActivity extends SherlockActivity implements MessageListene
 	public static void openTestChatActivityWithMessage(Context context, String user, String message) {
 		Intent i = new Intent(context, TestChatActivity.class);
 		i.putExtra(USER_STRING, user);
-		i.putExtra(MESSAGE_STRING, message);
+		if(message!=null)
+			i.putExtra(MESSAGE_STRING, message);
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(i);
 		

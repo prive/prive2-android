@@ -9,6 +9,7 @@ import prof7bit.torchat.android.gui.TestChatActivity;
 import prof7bit.torchat.android.gui.TorChat;
 import prof7bit.torchat.core.Client;
 import prof7bit.torchat.core.ClientHandler;
+import ru.dtlbox.torchat.entities.ChatMessage;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
