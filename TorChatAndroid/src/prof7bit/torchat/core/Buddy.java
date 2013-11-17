@@ -35,6 +35,7 @@ public class Buddy implements ConnectionHandler {
 	Client mClient = null;
 
 	boolean mHandshakeComlete = false;
+	public HandshakeStatus mHandshakeStatus = HandshakeStatus.NOT_BEGIN;
 
 	public Buddy(Client client) {
 		mClient = client;
@@ -113,7 +114,8 @@ public class Buddy implements ConnectionHandler {
 	@Override
 	public void onPongReceived(Msg_pong msg) {
 		logInfo(" pong " + msg.getRandomString());
-		mHandshakeComlete = true;
+		mHandshakeComlete = true;//TODO equal logics
+		mHandshakeStatus = HandshakeStatus.COMPLETE;
 		mClient.onChatEstablished(mOnionAddressRecepient);
 	}
 
@@ -138,11 +140,71 @@ public class Buddy implements ConnectionHandler {
 		logInfo(connection.getStringConnectionType() + " onDisconnect: "
 				+ reason);
 		
+		//set up handshake status as ABORTED
+		mHandshakeStatus = HandshakeStatus.ABORTED;
+		
+		try {
+			reconnect();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	protected void logInfo(String text) {
 		Log.i(LOG_TAG + "/" + (mOnionAddressRecepient != null ? mOnionAddressRecepient
 				: "undefinedOnionAddress"), text);
+	}
+	
+	/**
+	 * Function for reconnect 
+	 * @throws IOException
+	 */
+	public void reconnect() throws IOException{
+		if (mOnionAddressRecepient == null){
+			Log.w(LOG_TAG , "onion address is null, recconection aborted");
+			return;
+		}
+		
+		/*
+		 * TODO need logic for close this connections
+		 */
+		mIncomingConnection = null;
+		mOutcomingConnection = null;
+		
+		//start again
+		try {
+			startConnection();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void startConnection(String onionAddress) throws IOException{
+		if (mOnionAddressRecepient == null)
+			mOnionAddressRecepient = onionAddress;
+		startConnection();
+	}
+	
+	
+	protected void startConnection() throws IOException{
+		//set up status as in process
+		mHandshakeStatus = HandshakeStatus.PROCESS;
+		Connection c;
+
+		c = new Connection(mClient.reactor, mOnionAddressRecepient + Client.ONION_DOMAIN,
+				Client.TORCHAT_DEFAULT_PORT, mClient);
+
+		c.recipientOnionAddress = mOnionAddressRecepient;
+		
+		//send ping
+		Msg_ping msgPing = new Msg_ping(c);
+		msgPing.setOnionAddress(mClient.mMyOnionAddress);
+		msgPing.setRandomString(mClient.mMyRandomString);
+		c.sendMessage(msgPing);
+		
+		//store this connection 
+		addOutcomingConnection(c);
 	}
 
 	/**
@@ -234,5 +296,21 @@ public class Buddy implements ConnectionHandler {
 
 	public void setOnionAddressRecepient(String onionAddressRecepient) {
 		this.mOnionAddressRecepient = onionAddressRecepient;
+	}
+
+	public void sendMessage(String textMessage) {
+		/*TODO need to add logic for handle messages before connection established
+		 * enqueue messages
+		 * just spike now
+		 */
+		if (mHandshakeStatus != HandshakeStatus.COMPLETE){
+			Log.w(LOG_TAG, "handshake is not comlete yet, try to send message later");
+			return;
+		}
+		
+		Msg_message msgMessage = new Msg_message(mOutcomingConnection);
+		msgMessage.setMessage(textMessage);
+		mOutcomingConnection.sendMessage(msgMessage);
+		logInfo("message was successfully sended");
 	}
 }
