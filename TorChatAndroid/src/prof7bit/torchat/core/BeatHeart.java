@@ -4,6 +4,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import android.content.Context;
+
 /**
  * this class manages buddies connections
  * It is necessary only for check buddy state and start reconnect if 
@@ -12,6 +14,8 @@ import java.util.concurrent.TimeUnit;
  *
  */
 public class BeatHeart extends BuddyManager {
+	final static int BEAT_HEART_INTERVAL = 3;//interval of beatheart in minutes
+	
 	ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 	/**
 	 * Function must be begin after all buddies begin connection at least one times at start client
@@ -20,14 +24,14 @@ public class BeatHeart extends BuddyManager {
 	 * it can be in handshake process, or handshake was rejected
 	 * 
 	 */
-	private void startBeatHeart(){
+	protected void startBeatHeart(){
 		service.scheduleWithFixedDelay(new Runnable() {
 			
 			@Override
 			public void run() {
-								
+				
 			}
-		}, 0, 3, TimeUnit.MINUTES);
+		}, 0, BEAT_HEART_INTERVAL, TimeUnit.MINUTES);
 		
 	}
 }

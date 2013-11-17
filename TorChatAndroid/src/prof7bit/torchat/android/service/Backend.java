@@ -79,7 +79,7 @@ public class Backend extends Service implements ClientHandler {
 		PrintlnRedirect.Install("TorChat");
 
 		try {
-			client = new Client(this, 11009);
+			client = new Client(getApplicationContext(), this, 11009);
 			showNotification();
 		} catch (IOException e) {
 			// TODO what to do now?

@@ -1,8 +1,12 @@
 package prof7bit.torchat.core;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.dtlbox.torchat.dbworking.DBManager;
+import ru.dtlbox.torchat.entities.Contact;
+import android.content.Context;
 import android.util.Log;
 
 public class BuddyManager {
@@ -12,20 +16,17 @@ public class BuddyManager {
 
 	protected List<Connection> mConnections = new ArrayList<Connection>();
 
-	public BuddyManager() {
-		super();
-	}
-
 	protected void addNewConnection(Connection connection) {
 		mConnections.add(connection);
 	}
-	
-	protected void addNewBuddy(Buddy buddy){
+
+	protected void addNewBuddy(Buddy buddy) {
 		mBuddies.add(buddy);
 	}
 
 	/**
 	 * return buddy for passed onion address
+	 * 
 	 * @param onionAddress
 	 * @return
 	 */
@@ -56,6 +57,16 @@ public class BuddyManager {
 				Log.w(LOG_TAG, "recipientOnionAddress is null");
 		}
 		return null;
+	}
+
+	protected void startAllBuddyConnections() {
+		try {
+			for (Buddy buddy : mBuddies)
+				buddy.startConnection();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

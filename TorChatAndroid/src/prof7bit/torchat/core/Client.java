@@ -1,12 +1,16 @@
 package prof7bit.torchat.core;
 
 import java.io.IOException;
+import java.util.List;
 
 import prof7bit.reactor.ListenPort;
 import prof7bit.reactor.ListenPortHandler;
 import prof7bit.reactor.Reactor;
 import prof7bit.reactor.TCP;
 import prof7bit.reactor.TCPHandler;
+import ru.dtlbox.torchat.dbworking.DBManager;
+import ru.dtlbox.torchat.entities.Contact;
+import android.content.Context;
 import android.util.Log;
 
 /**
@@ -22,16 +26,27 @@ public class Client extends BeatHeart implements ListenPortHandler {
 	
 	final static String ONION_DOMAIN = ".onion";
 	final static int TORCHAT_DEFAULT_PORT = 11009;
-
+	
+	private DBManager dbManager = null;
 	private ClientHandler clientHandler;
-	private Reactor reactor;
+	public Reactor reactor;
 	private ListenPort listenPort;
 
-	public Client(ClientHandler clientHandler, int port) throws IOException {
+	public Client(Context context, ClientHandler clientHandler, int port) throws IOException {
 		this.clientHandler = clientHandler;
 		this.reactor = new Reactor();
 		this.listenPort = new ListenPort(reactor, this);
 		this.listenPort.listen(port);
+		
+		//set up DB manager
+		dbManager = new DBManager();
+		dbManager.init(context);
+		
+		//restore all contacts into buddy list
+		restoreAllContactsBuddies();
+		
+		//start beat heart for buddies connections
+		startBeatHeart();
 	}
 
 	public void close() throws InterruptedException {
@@ -49,6 +64,27 @@ public class Client extends BeatHeart implements ListenPortHandler {
 		Connection c = new Connection(tcp, this);
 		addNewConnection(c);
 		return c;
+	}
+	
+	/**
+	 * Function for restoring all buddies from contact rows
+	 */
+	public void restoreAllContactsBuddies(){
+		List<Contact> contacts = dbManager.getAllContact();
+		for (Contact contact : contacts){
+			boolean alreadyInList = false;
+			for (Buddy buddy : mBuddies)
+				if (buddy.getOnionAddressRecepient().equals(contact.getOnionAddress()) )
+					alreadyInList = true;
+			
+			if (!alreadyInList){
+				Buddy buddy = new Buddy(this);
+				buddy.setOnionAddressRecepient(contact.getOnionAddress());
+				addNewBuddy(buddy);
+			}
+	
+		}
+		
 	}
 
 	public void setMyOnionAddress(String onionAddress) {
@@ -123,33 +159,15 @@ public class Client extends BeatHeart implements ListenPortHandler {
 			clientHandler.onStartChat(buddy.getOnionAddressRecepient());
 			return;
 		}
-
-		//if buddy has not outcoming connection
-		if (!buddy.hasOutComingConnection()) {
+		
+		
+		if (buddy.mHandshakeStatus == Buddy.HandshakeStatus.NOT_BEGIN
+				|| buddy.mHandshakeStatus == Buddy.HandshakeStatus.ABORTED) {
 			
-			if (buddy.mOnionAddressRecepient == null)
-				buddy.mOnionAddressRecepient = onionAddress;
+			buddy.startConnection(onionAddress);
 
-			Connection c;
-
-			c = new Connection(new Reactor(), onionAddress + ONION_DOMAIN,
-					TORCHAT_DEFAULT_PORT, this);
-
-			c.recipientOnionAddress = onionAddress;
-			
-			//send ping
-			Msg_ping msgPing = new Msg_ping(c);
-			msgPing.setOnionAddress(mMyOnionAddress);
-			msgPing.setRandomString(mMyRandomString);
-			c.sendMessage(msgPing);
-			
-			//store this connection in buddy
-			buddy.addOutcomingConnection(c);
-			
 			//store this buddy
 			addNewBuddy(buddy);
-			
-			addNewConnection(c);// TODO delete, i think no important now to store link of this object
 			
 		}
 
@@ -177,16 +195,13 @@ public class Client extends BeatHeart implements ListenPortHandler {
 	 * @param textMessage
 	 */
 	public void sendMessage(String onionAddress, String textMessage) {
-		Connection connection = getConnectionByOnionAddress(onionAddress,
-				Connection.Type.OUTCOMING);
-		if (connection != null) {
-			Msg_message message = new Msg_message(connection);
-			message.setMessage(textMessage);
-			connection.sendMessage(message);
+		Buddy buddy = getBuddyByOnionAddress(onionAddress);
+		if (buddy != null) {
+			buddy.sendMessage(textMessage);
 			Log.i(LOG_TAG + "sendMessage", "message was sended");
 		} else {
 			Log.w(LOG_TAG + "sendMessage",
-					"no connection found for this onion address");
+					"no buddy found for this onion address");
 		}
 	}
 }
