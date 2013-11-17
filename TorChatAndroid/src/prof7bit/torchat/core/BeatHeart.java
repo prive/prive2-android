@@ -1,10 +1,12 @@
 package prof7bit.torchat.core;
 
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import android.content.Context;
+import prof7bit.torchat.core.Buddy.HandshakeStatus;
+import android.util.Log;
 
 /**
  * this class manages buddies connections
@@ -14,6 +16,7 @@ import android.content.Context;
  *
  */
 public class BeatHeart extends BuddyManager {
+	final static String LOG_TAG = "BeatHeart";
 	final static int BEAT_HEART_INTERVAL = 3;//interval of beatheart in minutes
 	
 	ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
@@ -29,7 +32,15 @@ public class BeatHeart extends BuddyManager {
 			
 			@Override
 			public void run() {
-				
+				Log.i(LOG_TAG, "BEAT HEART START");
+				for (Buddy buddy : mBuddies)
+					if (buddy.mHandshakeStatus == HandshakeStatus.ABORTED || 
+							buddy.mHandshakeStatus == HandshakeStatus.NOT_BEGIN )
+						try {
+							buddy.reconnect();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 			}
 		}, 0, BEAT_HEART_INTERVAL, TimeUnit.MINUTES);
 		
