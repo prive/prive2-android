@@ -36,6 +36,7 @@ public class Buddy implements ConnectionHandler {
 
 	boolean mHandshakeComlete = false;
 	public HandshakeStatus mHandshakeStatus = HandshakeStatus.NOT_BEGIN;
+	public Status mBuddyStatus = Status.OFFLINE;
 
 	public Buddy(Client client) {
 		mClient = client;
@@ -116,6 +117,7 @@ public class Buddy implements ConnectionHandler {
 		logInfo(" pong " + msg.getRandomString());
 		mHandshakeComlete = true;//TODO equal logics
 		mHandshakeStatus = HandshakeStatus.COMPLETE;
+		mBuddyStatus = Status.ONLINE;
 		mClient.onChatEstablished(mOnionAddressRecepient);
 	}
 
@@ -140,6 +142,7 @@ public class Buddy implements ConnectionHandler {
 		logInfo(connection.getStringConnectionType() + " onDisconnect: "
 				+ reason);
 		mHandshakeStatus = HandshakeStatus.ABORTED;
+		mBuddyStatus = Status.OFFLINE;
 	}
 
 	protected void logInfo(String text) {
