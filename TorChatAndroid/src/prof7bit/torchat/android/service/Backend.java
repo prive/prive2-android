@@ -220,6 +220,11 @@ public class Backend extends Service implements ClientHandler {
 			listener.onAddNewContact(user);
 	}
 	
+	/**
+	 * Function for get status for buddy
+	 * @param onionAddress
+	 * @return
+	 */
 	public Buddy.Status getBuddyStatus(String onionAddress){
 		if (client == null){
 			return Buddy.Status.OFFLINE;

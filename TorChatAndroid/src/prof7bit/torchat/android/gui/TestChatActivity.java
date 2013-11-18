@@ -84,7 +84,7 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 		
 		if(getIntent().getExtras()!=null) {
 			Bundle bundle = getIntent().getExtras();
-			if(bundle.containsKey(USER_STRING)&&bundle.containsKey(MESSAGE_STRING)) {
+			if(bundle.containsKey(USER_STRING)) {
 				user = bundle.getString(USER_STRING);
 				setTitle(user != null ? user : "not_detected");
 				//tvChat.append(bundle.getString(MESSAGE_STRING));
@@ -111,7 +111,6 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 		
 		
 	}
-	
 	
 	public static void openTestChatActivityWithMessage(Context context, String user, String message) {
 		Intent i = new Intent(context, TestChatActivity.class);
