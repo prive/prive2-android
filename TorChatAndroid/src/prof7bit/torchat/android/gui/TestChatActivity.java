@@ -7,7 +7,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 
 import prof7bit.torchat.android.R;
 import prof7bit.torchat.android.service.Backend;
-import prof7bit.torchat.android.service.Backend.MessageListener;
+import prof7bit.torchat.android.service.Backend.ChatListener;
 import ru.dtlbox.torchat.customviews.AvatarView;
 import ru.dtlbox.torchat.entities.ChatMessage;
 import ru.dtlbox.torchat.tests.ChatTestActivityDesingTest;
@@ -31,7 +31,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class TestChatActivity extends SherlockActivity implements MessageListener, OnClickListener{
+public class TestChatActivity extends SherlockActivity implements ChatListener, OnClickListener{
 	//TODO
 	final static String LOG_TAG = "TestChatActivity";
 	final static String USER_STRING = "user";

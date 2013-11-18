@@ -150,6 +150,10 @@ public class Buddy implements ConnectionHandler {
 				: "undefinedOnionAddress"), text);
 	}
 	
+	protected void changeBuddyStatus(Status newStatus){
+		mBuddyStatus = newStatus;
+	}
+	
 	/**
 	 * Function for reconnect 
 	 * @throws IOException
