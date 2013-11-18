@@ -5,20 +5,26 @@ import android.util.Log;
 
 public class Contact {
 
+	public enum ContactStatus {
+		ONLINE, OFFLINE, CONNECTING
+	}
 	
 	public static final String KEY_ONION_ADDRESS = "address";
 	public static final String KEY_NICKNAME = "nickname";
 	
 	
+	
 	private String onionAddress;
 	private String nickName;
-	
+	private ContactStatus status;
 	private Bitmap avatar;
-	
+	private String tag;
 	
 	public Contact(String onionAddress, String nickName) {
 		this.onionAddress = onionAddress;
 		this.nickName = nickName;
+		this.status = ContactStatus.OFFLINE;
+		this.tag = "";
 	}
 	
 	public String getOnionAddress() {
@@ -51,5 +57,22 @@ public class Contact {
 		return avatar!=null;
 	}
 	
+	public Contact setStatus(ContactStatus status) {
+		this.status = status;
+		return this;
+	}
+	
+	public ContactStatus getStatus() {
+		return status;
+	}
+	
+	public Contact setTag(String tag) {
+		this.tag = tag;
+		return this;
+	}
+	
+	public String getTag() {
+		return tag;
+	}
 	
 }

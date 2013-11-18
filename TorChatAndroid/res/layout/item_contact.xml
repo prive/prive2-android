@@ -21,22 +21,38 @@
             android:layout_marginLeft="5dip"
             android:layout_marginRight="5dip"
             android:id="@+id/tv_contact_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip"
+            />
+        <View 
+            android:layout_width="0dip"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:id="@+id/tv_status"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="5dip"
             android:layout_marginBottom="5dip"
             />
-   <!--      <CheckBox
+         <CheckBox
+             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
+            android:id="@+id/cb_status"
             
-            android:id="@+id/cb_contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/mark_x"
             android:layout_margin="5dip" 
-            />  -->
+            />  
     </LinearLayout>
     <LinearLayout 
         android:id="@+id/ll_ontop"

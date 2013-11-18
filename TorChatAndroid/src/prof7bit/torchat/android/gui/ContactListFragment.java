@@ -8,6 +8,7 @@ import prof7bit.torchat.android.service.Backend;
 import ru.dtlbox.torchat.customviews.AvatarView;
 import ru.dtlbox.torchat.dbworking.DBManager;
 import ru.dtlbox.torchat.entities.Contact;
+import ru.dtlbox.torchat.entities.Contact.ContactStatus;
 import ru.dtlbox.torchat.tests.AvatarSpike;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -154,6 +156,9 @@ public class ContactListFragment extends Fragment {
 				
 			TextView tvNickname = (TextView)convertView.findViewById(R.id.tv_contact_name);
 			tvNickname.setText(contacts.get(position).getNickName());
+			
+			((CheckBox)convertView.findViewById(R.id.cb_status)).setChecked(contacts.get(position).getStatus() == ContactStatus.ONLINE);
+			((TextView)convertView.findViewById(R.id.tv_status)).setText(contacts.get(position).getTag());
 			
 			convertView.setTag(contacts.get(position));			
 			return convertView;
