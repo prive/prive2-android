@@ -38,4 +38,8 @@ public class MessageContainerSpike {
 		return messages.get(user);
 	}
 	
+	public Map<String, List<ChatMessage>> getAllMessages() {
+		return  messages;
+	}
+	
 }
