@@ -71,6 +71,18 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if(getIntent().getExtras()!=null) {
+			user = getIntent().getStringExtra(USER_STRING);
+//			Bundle bundle = getIntent().getExtras();
+//			if(bundle.containsKey(USER_STRING)) {
+//				user = bundle.getString(USER_STRING);
+//				setTitle(user != null ? user : "not_detected");
+				//tvChat.append(bundle.getString(MESSAGE_STRING));
+//			}
+				
+		}
+		
 		setContentView(R.layout.activity_chat);
 		getSupportActionBar().hide();
 //		tvChat = (TextView)findViewById(R.id.tv_chat);
@@ -84,16 +96,7 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 		//chatAdapter = new ChatAdapter(TestChatActivity.this, ChatTestActivityDesingTest.generateMessages());
 		lvChat.setAdapter(chatAdapter);
 		
-		if(getIntent().getExtras()!=null) {
-			user = getIntent().getStringExtra(USER_STRING);
-//			Bundle bundle = getIntent().getExtras();
-//			if(bundle.containsKey(USER_STRING)) {
-//				user = bundle.getString(USER_STRING);
-//				setTitle(user != null ? user : "not_detected");
-				//tvChat.append(bundle.getString(MESSAGE_STRING));
-//			}
-				
-		}
+		
 		
 		
 		
