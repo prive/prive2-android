@@ -4,13 +4,11 @@ package prof7bit.torchat.android.gui;
 import java.util.List;
 
 import prof7bit.torchat.android.R;
-import prof7bit.torchat.android.gui.TestChatActivity.ChatAdapter;
 import prof7bit.torchat.android.service.Backend;
 import prof7bit.torchat.android.service.Backend.ContactListener;
 import prof7bit.torchat.core.Buddy.Status;
 import ru.dtlbox.torchat.customviews.AvatarView;
 import ru.dtlbox.torchat.dbworking.DBManager;
-import ru.dtlbox.torchat.dbworking.DBManager.DBHelper;
 import ru.dtlbox.torchat.entities.Contact;
 import ru.dtlbox.torchat.entities.Contact.ContactStatus;
 import ru.dtlbox.torchat.tests.AvatarSpike;
@@ -29,8 +27,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 

@@ -36,31 +36,31 @@ public class ChatsFragment extends Fragment {
 			Bundle savedInstanceState) {
 	
 		View v = inflater.inflate(R.layout.fragment_contact_list, null);
-		
-		lvLastMessages = (ListView)v.findViewById(R.id.lv_contacts);
-		
-		
-		lvLastMessages.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				
-				String contact = (String)(arg1.getTag());
-				Intent intent = new Intent(getActivity(), Backend.class);
-				intent.setAction(Backend.ACTION_OPEN_CONNECTION);
-				intent.putExtra(Backend.EXTRA_STRING_ONION_ADDRESS, contact);
-				try {
-					((TorChat)getActivity()).startService(intent);
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-				TestChatActivity.openTestChatActivityWithMessage(getActivity(), contact, null);
-				
-				
-			}
-			
-		});
+//		lvLastMessages = (ListView)v.findViewById(R.id.lv_contacts);
+//		
+//		
+//		lvLastMessages.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+//					long arg3) {
+//				
+//				String contact = (String)(arg1.getTag());
+//				Intent intent = new Intent(getActivity(), Backend.class);
+//				intent.setAction(Backend.ACTION_OPEN_CONNECTION);
+//				intent.putExtra(Backend.EXTRA_STRING_ONION_ADDRESS, contact);
+//				try {
+//					((TorChat)getActivity()).startService(intent);
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//				}
+//				TestChatActivity.openTestChatActivityWithMessage(getActivity(), contact, null);
+//				
+//				
+//			}
+//			
+//		});
 		
 		
 		
