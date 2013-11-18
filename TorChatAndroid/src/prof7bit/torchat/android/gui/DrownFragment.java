@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class DrownFragment extends Fragment {
 	
@@ -22,10 +24,11 @@ public class DrownFragment extends Fragment {
 		
 		
 		
-		FrameLayout fl = new FrameLayout(getActivity());
+		ImageView fl = new ImageView(getActivity());
 		fl.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
-		fl.setBackgroundResource(R.drawable.timelinescreen);
 		
+		fl.setBackgroundResource(R.drawable.timelinescreen);
+		fl.setScaleType(ScaleType.FIT_START);
 		
 		
 		return fl;
