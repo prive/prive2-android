@@ -89,7 +89,7 @@ public class ContactListFragment extends Fragment implements ContactListener {
 	
 	@Override
 	public void onResume() {
-		
+		doBindService();
 		getActivity().setTitle(TITLE);
 		List<Contact> contacts = mDbManager.getAllContact();
 		lvContacts.setAdapter(new ContactListAdapter(getActivity(), contacts));
@@ -118,6 +118,14 @@ public class ContactListFragment extends Fragment implements ContactListener {
 			}
 		});
 		super.onResume();
+	}
+	
+	@Override
+	public void onPause() {
+		if(mBackend != null)
+			mBackend.removeListener(ContactListFragment.this);
+		doUnbindService();
+		super.onPause();
 	}
 	
 	
@@ -201,7 +209,7 @@ public class ContactListFragment extends Fragment implements ContactListener {
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			
-			
+			mBackend.removeListener(ContactListFragment.this);
 			
 		}
 		
@@ -209,7 +217,7 @@ public class ContactListFragment extends Fragment implements ContactListener {
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			
 			mBackend = ((Backend.LocalBinder)service).getService();
-			
+			mBackend.addListener(ContactListFragment.this);
 		}
 	};
 	
