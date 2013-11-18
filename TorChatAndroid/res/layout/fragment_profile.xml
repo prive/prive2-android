@@ -28,26 +28,31 @@
          <LinearLayout 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_gravity="center_horizontal">
             
         <TextView
             android:layout_marginTop="10dip"
-            android:text="Nickname: "
+            android:text="Your Prive PIN:"
             android:layout_marginLeft="10dip"
-            android:layout_width="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
              
             />
+        
         <TextView
+            android:textStyle="bold"
             android:layout_marginTop="10dip"
-            android:id="@+id/tv_nickname"
+            android:id="@+id/tv_onion_address"
             android:layout_marginLeft="20dip"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-             
+             android:gravity="center_horizontal"
             />
+       
         </LinearLayout>
+        <View android:layout_width="match_parent" android:layout_height="1dip" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_marginTop="10dip" android:background="#CCCCCC"/>
         <LinearLayout 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,21 +61,25 @@
             
         <TextView
             android:layout_marginTop="10dip"
-            android:text="Onion Address: "
+            android:text="Name: "
             android:layout_marginLeft="10dip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              
             />
-        <TextView
+        
+         <TextView
             android:layout_marginTop="10dip"
-            android:id="@+id/tv_onion_address"
+            android:id="@+id/tv_nickname"
             android:layout_marginLeft="20dip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              
             />
+        
         </LinearLayout>
+        
+        
         <LinearLayout 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

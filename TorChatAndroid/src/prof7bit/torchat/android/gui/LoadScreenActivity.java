@@ -1,5 +1,7 @@
 package prof7bit.torchat.android.gui;
 
+import com.actionbarsherlock.app.SherlockActivity;
+
 import prof7bit.torchat.android.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -9,13 +11,16 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 
 
-public class LoadScreenActivity extends Activity {
+public class LoadScreenActivity extends SherlockActivity {
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	
 		super.onCreate(savedInstanceState);
+		
+		getSupportActionBar().hide();
+		
 		FrameLayout flLoadScreen = new FrameLayout(LoadScreenActivity.this);
 		
 		flLoadScreen.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
