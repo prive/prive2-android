@@ -22,4 +22,6 @@ public interface ClientHandler {
 	
 	public void onStatusChange(String user, Buddy.Status status);
 	
+	public void onNewBuddy(String user);
+	
 }

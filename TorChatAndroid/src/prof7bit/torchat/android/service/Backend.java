@@ -214,6 +214,12 @@ public class Backend extends Service implements ClientHandler {
 			listener.onStatusChange(user, status);
 	}
 	
+	@Override
+	public void onNewBuddy(String user) {
+		for (ContactListener listener : listContactListeners)
+			listener.onAddNewContact(user);
+	}
+	
 	public Buddy.Status getBuddyStatus(String onionAddress){
 		if (client == null){
 			return Buddy.Status.OFFLINE;
@@ -247,7 +253,7 @@ public class Backend extends Service implements ClientHandler {
 	public interface ContactListener{
 		public void onMessage(String user, String message);
 		public void onStatusChange(String user, Buddy.Status status);
-		public void onAddNewContact(String user, Buddy.Status status);
+		public void onAddNewContact(String user);
 	}
 	
 	public class LocalBinder extends Binder {

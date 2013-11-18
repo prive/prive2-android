@@ -250,7 +250,7 @@ public class ContactListFragment extends Fragment implements ContactListener {
 
 
 	@Override
-	public void onAddNewContact(String user, Status status) {
+	public void onAddNewContact(String user) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -120,7 +120,11 @@ public class Client extends BeatHeart implements ListenPortHandler {
 		Buddy buddy = new Buddy(this);
 		buddy.addIncomingConnection(connection);
 		addNewBuddy(buddy);
-		
+		onNewBuddy(buddy);
+	}
+	
+	protected void onNewBuddy(Buddy buddy){
+		clientHandler.onNewBuddy(buddy.getOnionAddressRecepient());
 	}
 	
 	protected void onMessage(String user, String message){
