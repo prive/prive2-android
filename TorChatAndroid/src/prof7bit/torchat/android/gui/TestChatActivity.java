@@ -156,6 +156,7 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 			listMessages.add(new ChatMessage("","").setText(message));
 		//TODO 
 		((ChatAdapter)(lvChat.getAdapter())).notifyDataSetChanged();
+		lvChat.setSelection(lvChat.getAdapter().getCount()-1);
 		
 	
 	}
@@ -223,7 +224,7 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 					view = inflater.inflate(R.layout.message_out, null);
 			}
 			((TextView)view.findViewById(R.id.tv_message)).setText(msg.getText());
-			((AvatarView)view.findViewById(R.id.iv_avatar)).setFrameImage(BitmapFactory.decodeResource(getResources(), R.drawable.face_red));
+			((AvatarView)view.findViewById(R.id.iv_avatar)).setFrameImage(BitmapFactory.decodeResource(getResources(), R.drawable.face_red_status));
 			
 			return view;
 		}
