@@ -139,6 +139,7 @@ public class Buddy implements ConnectionHandler {
 	public void onDisconnect(Connection connection, String reason) {
 		logInfo(connection.getStringConnectionType() + " onDisconnect: "
 				+ reason);
+		mHandshakeStatus = HandshakeStatus.ABORTED;
 	}
 
 	protected void logInfo(String text) {

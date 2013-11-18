@@ -17,7 +17,7 @@ import android.util.Log;
  */
 public class BeatHeart extends BuddyManager {
 	final static String LOG_TAG = "BeatHeart";
-	final static int BEAT_HEART_INTERVAL = 3;//interval of beatheart in minutes
+	final static int BEAT_HEART_INTERVAL = 1;//interval of beatheart in minutes
 	
 	ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 	/**
