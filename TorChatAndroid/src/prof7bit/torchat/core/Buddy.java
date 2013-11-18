@@ -117,7 +117,7 @@ public class Buddy implements ConnectionHandler {
 		logInfo(" pong " + msg.getRandomString());
 		mHandshakeComlete = true;//TODO equal logics
 		mHandshakeStatus = HandshakeStatus.COMPLETE;
-		mBuddyStatus = Status.ONLINE;
+		changeBuddyStatus(Status.ONLINE);
 		mClient.onChatEstablished(mOnionAddressRecepient);
 	}
 
@@ -142,12 +142,17 @@ public class Buddy implements ConnectionHandler {
 		logInfo(connection.getStringConnectionType() + " onDisconnect: "
 				+ reason);
 		mHandshakeStatus = HandshakeStatus.ABORTED;
-		mBuddyStatus = Status.OFFLINE;
+		changeBuddyStatus(Status.OFFLINE);
 	}
 
 	protected void logInfo(String text) {
 		Log.i(LOG_TAG + "/" + (mOnionAddressRecepient != null ? mOnionAddressRecepient
 				: "undefinedOnionAddress"), text);
+	}
+	
+	protected void changeBuddyStatus(Status newStatus){
+		mBuddyStatus = newStatus;
+		mClient.onStatusChange(mOnionAddressRecepient, mBuddyStatus);
 	}
 	
 	/**

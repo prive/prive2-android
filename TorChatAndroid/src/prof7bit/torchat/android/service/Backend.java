@@ -34,7 +34,7 @@ public class Backend extends Service implements ClientHandler {
 	
 	private final IBinder mBinder = new LocalBinder();
 	
-	private List<MessageListener> listListeners = new ArrayList<Backend.MessageListener>();
+	private List<ChatListener> listListeners = new ArrayList<Backend.ChatListener>();
 	
 	@SuppressWarnings("deprecation")
 	private void showNotification() {
@@ -88,13 +88,13 @@ public class Backend extends Service implements ClientHandler {
 		}
 	}
 
-	public void removeListener(MessageListener listener) {
+	public void removeListener(ChatListener listener) {
 		Log.i(LOG_TAG, "removeListener");
 		listListeners.remove(listener);
 		
 	}
 	
-	public void addListener(MessageListener listener) {
+	public void addListener(ChatListener listener) {
 		
 		listListeners.add(listener);
 		
@@ -186,11 +186,17 @@ public class Backend extends Service implements ClientHandler {
 		}
 		else {
 			//TODO for test
-			for(MessageListener listener : listListeners)
+			for(ChatListener listener : listListeners)
 				listener.onMessage(message);
 				
 		}
 		
+	}
+	
+	@Override
+	public void onStatusChange(String user, Buddy.Status status) {
+		for(ChatListener listener : listListeners)
+			listener.onStatusChange(status);
 	}
 	
 	/**
@@ -206,8 +212,14 @@ public class Backend extends Service implements ClientHandler {
 			Log.w(LOG_TAG + "/sendMessage", "client is null");
 	}
 	
-	public interface MessageListener{
+	public interface ChatListener{
 		public void onMessage(String message);
+		public void onStatusChange(Buddy.Status status);
+	}
+	
+	public interface ContactListener{
+		public void onMessage(String user, String message);
+		public void onStatusChange(String user, Buddy.Status status);
 	}
 	
 	public class LocalBinder extends Binder {
@@ -220,11 +232,6 @@ public class Backend extends Service implements ClientHandler {
 	public void onStartChat(String user) {
 		Log.i(LOG_TAG, "onStartChat");
 		TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, "onStartChat");
-	}
-
-	@Override
-	public void onStatusChange(String user, Buddy.Status status) {
-		
 	}
 	
 }

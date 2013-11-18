@@ -127,6 +127,10 @@ public class Client extends BeatHeart implements ListenPortHandler {
 		clientHandler.onMessage(user, message);
 	}
 	
+	public void onStatusChange(String user, Buddy.Status status){
+		clientHandler.onStatusChange(user, status);
+	}
+	
 	/**
 	 * handle complete handshake in one of all buddies
 	 * @param user
