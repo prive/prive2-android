@@ -35,7 +35,9 @@ public class MessageContainerSpike {
 	}
 	
 	public List<ChatMessage> getMessages(String user) {
-		return messages.get(user);
+		if(messages.containsKey(user))
+			return messages.get(user);
+		return new ArrayList<ChatMessage>();
 	}
 	
 	public Map<String, List<ChatMessage>> getAllMessages() {
