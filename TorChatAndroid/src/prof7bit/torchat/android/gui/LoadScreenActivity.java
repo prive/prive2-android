@@ -24,7 +24,7 @@ public class LoadScreenActivity extends SherlockActivity {
 		FrameLayout flLoadScreen = new FrameLayout(LoadScreenActivity.this);
 		
 		flLoadScreen.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		flLoadScreen.setBackgroundResource(R.drawable.loadscreen);
+		flLoadScreen.setBackgroundResource(R.drawable.loadscreen1);
 		setContentView(flLoadScreen);
 		
 		
