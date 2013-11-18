@@ -167,7 +167,9 @@ public class ContactListFragment extends Fragment implements ContactListener {
 			
 			AvatarView avAvatar = (AvatarView)convertView.findViewById(R.id.av_contact_icon);
 			
-			avAvatar.setFrameImage(BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.face_red));
+			avAvatar.setFrameImage( contacts.get(position).getStatus() == ContactStatus.ONLINE ?
+					BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.face_green_status) : 
+						BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.face_red_status));
 			if(contacts.get(position).hasAvatar()) {
 				avAvatar.setImageBitmap(contacts.get(position).getAvatar());
 			}
