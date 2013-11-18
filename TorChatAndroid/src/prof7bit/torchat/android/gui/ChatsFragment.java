@@ -118,7 +118,7 @@ public class ChatsFragment extends Fragment {
 			
 			
 	        ((TextView)convertView.findViewById(R.id.tv_contact_name)).setText(name);
-	        ((TextView)convertView.findViewById(R.id.tv_contact_name)).setText(messages.get(messages.size()-1).getText());
+	        ((TextView)convertView.findViewById(R.id.tv_message_text)).setText(messages.get(messages.size()-1).getText());
 	        convertView.setTag(name);
 
 	        return convertView;

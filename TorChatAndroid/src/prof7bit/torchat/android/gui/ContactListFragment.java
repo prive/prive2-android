@@ -90,11 +90,12 @@ public class ContactListFragment extends Fragment implements ContactListener {
 	
 	@Override
 	public void onResume() {
-		
+		Log.i(LOG_TAG, "sdbsfb");
 		doBindService();
 		
 		getActivity().setTitle(TITLE);
-		List<Contact> contacts = mDbManager.getAllContact();
+		contacts = mDbManager.getAllContact();
+		Log.i(LOG_TAG, "contacts count = " + contacts.size());
 		lvContacts.setAdapter(new ContactListAdapter(getActivity(), contacts));
 		lvContacts.setOnItemClickListener(new OnItemClickListener() {
 

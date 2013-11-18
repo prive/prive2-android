@@ -1,10 +1,13 @@
 package prof7bit.torchat.android.gui;
 
+import prof7bit.torchat.android.service.Backend;
 import ru.dtlbox.torchat.dbworking.DBManager;
 import ru.dtlbox.torchat.entities.Contact;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -57,6 +60,10 @@ public class AddUserActivity extends Activity {
 					DBManager mDbManager = new DBManager().init(context);
 					mDbManager.insertContact(new Contact(address, nickname));
 					Toast.makeText(context, "DONE", Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(AddUserActivity.this, Backend.class);
+					intent.setAction(Backend.ACTION_OPEN_CONNECTION);
+					intent.putExtra(Backend.EXTRA_STRING_ONION_ADDRESS, address);
+					startService(intent);
 					finish();
 				}
 			}

@@ -197,8 +197,9 @@ public class Client extends BeatHeart implements ListenPortHandler {
 		// check there is buddy for this onion address
 		Buddy buddy = getBuddyByOnionAddress(onionAddress);
 
-		if (buddy == null)
+		if (buddy == null){
 			buddy = new Buddy(this);
+		}
 
 		// I think it is spike
 		if (buddy.isReadyForChat()) {
