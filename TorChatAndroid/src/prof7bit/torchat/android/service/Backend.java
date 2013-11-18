@@ -247,6 +247,7 @@ public class Backend extends Service implements ClientHandler {
 	public interface ContactListener{
 		public void onMessage(String user, String message);
 		public void onStatusChange(String user, Buddy.Status status);
+		public void onAddNewContact(String user, Buddy.Status status);
 	}
 	
 	public class LocalBinder extends Binder {
