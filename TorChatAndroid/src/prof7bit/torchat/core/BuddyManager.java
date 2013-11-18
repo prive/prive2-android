@@ -33,9 +33,12 @@ public class BuddyManager {
 	public Buddy getBuddyByOnionAddress(String onionAddress) {
 		if (onionAddress != null) {
 			for (Buddy buddy : mBuddies)
-				if (buddy.isOnionAddressLike(onionAddress))
+				if (buddy.isOnionAddressLike(onionAddress)){
+					Log.i(LOG_TAG, "buddy was found for this onion address");
 					return buddy;
+				}
 		}
+		Log.w(LOG_TAG, "buddy was NOT found for this onion address");
 		return null;
 	}
 

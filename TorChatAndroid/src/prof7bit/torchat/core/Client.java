@@ -123,12 +123,47 @@ public class Client extends BeatHeart implements ListenPortHandler {
 		
 	}
 	
-	public void onMessage(String user, String message){
+	protected void onMessage(String user, String message){
 		clientHandler.onMessage(user, message);
 	}
 	
-	public void onStatusChange(String user, Buddy.Status status){
+	protected void onStatusChange(String user, Buddy.Status status){
 		clientHandler.onStatusChange(user, status);
+	}
+	
+	/**
+	 * Add new buddy and start connection
+	 * @param onionAddress
+	 */
+	public void addBuddy(String onionAddress){
+		Buddy buddy = getBuddyByOnionAddress(onionAddress);
+		
+		if (buddy != null){
+			Log.w(LOG_TAG, "buddy already exists");
+			return;
+		}
+		
+		buddy = new Buddy(this);
+		try {
+			buddy.startConnection(onionAddress);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		addNewBuddy(buddy);
+	}
+	
+	/**
+	 * Function for get status for buddy
+	 * @param onionAddress
+	 * @return
+	 */
+	public Buddy.Status getBuddyStatus(String onionAddress){
+		Buddy buddy = getBuddyByOnionAddress(onionAddress);
+		if (buddy != null){
+			return buddy.mBuddyStatus;
+		}
+		return Buddy.Status.OFFLINE;
 	}
 	
 	/**

@@ -35,6 +35,7 @@ public class Backend extends Service implements ClientHandler {
 	private final IBinder mBinder = new LocalBinder();
 	
 	private List<ChatListener> listListeners = new ArrayList<Backend.ChatListener>();
+	private List<ContactListener> listContactListeners = new ArrayList<Backend.ContactListener>();
 	
 	@SuppressWarnings("deprecation")
 	private void showNotification() {
@@ -97,6 +98,18 @@ public class Backend extends Service implements ClientHandler {
 	public void addListener(ChatListener listener) {
 		
 		listListeners.add(listener);
+		
+	}
+	
+	public void removeListener(ContactListener listener) {
+		Log.i(LOG_TAG, "addListener");
+		listContactListeners.remove(listener);
+		
+	}
+	
+	public void addListener(ContactListener listener) {
+		Log.i(LOG_TAG, "addListener");
+		listContactListeners.add(listener);
 		
 	}
 	
@@ -181,22 +194,35 @@ public class Backend extends Service implements ClientHandler {
 
 	@Override
 	public void onMessage(String user, String message) {
-		if(listListeners.size()==0) {
-			TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, message);
-		}
-		else {
-			//TODO for test
-			for(ChatListener listener : listListeners)
-				listener.onMessage(message);
-				
-		}
 		
+		for(ChatListener listener : listListeners)
+			if (listener.getOnionAddress() != null 
+			&& listener.getOnionAddress().equals(user))
+				listener.onMessage(message);
+		
+		for (ContactListener listener : listContactListeners)
+			listener.onMessage(user, message);
+			
 	}
 	
 	@Override
 	public void onStatusChange(String user, Buddy.Status status) {
 		for(ChatListener listener : listListeners)
 			listener.onStatusChange(status);
+		
+		for (ContactListener listener : listContactListeners)
+			listener.onStatusChange(user, status);
+	}
+	
+	public Buddy.Status getBuddyStatus(String onionAddress){
+		if (client == null){
+			return Buddy.Status.OFFLINE;
+		}
+		return client.getBuddyStatus(onionAddress);
+	}
+	
+	public void addNewBuddy(String onionAddress){
+		client.addBuddy(onionAddress);
 	}
 	
 	/**
@@ -213,6 +239,7 @@ public class Backend extends Service implements ClientHandler {
 	}
 	
 	public interface ChatListener{
+		public String getOnionAddress();
 		public void onMessage(String message);
 		public void onStatusChange(Buddy.Status status);
 	}
