@@ -22,7 +22,7 @@ public class Buddy implements ConnectionHandler {
 		ABORTED
 	}
 	
-	enum Status {
+	public enum Status {
 		OFFLINE,
 		ONLINE
 	}

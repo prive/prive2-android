@@ -7,9 +7,9 @@ import java.util.List;
 import prof7bit.torchat.android.R;
 import prof7bit.torchat.android.gui.TestChatActivity;
 import prof7bit.torchat.android.gui.TorChat;
+import prof7bit.torchat.core.Buddy;
 import prof7bit.torchat.core.Client;
 import prof7bit.torchat.core.ClientHandler;
-import ru.dtlbox.torchat.entities.ChatMessage;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -221,4 +221,10 @@ public class Backend extends Service implements ClientHandler {
 		Log.i(LOG_TAG, "onStartChat");
 		TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, "onStartChat");
 	}
+
+	@Override
+	public void onStatusChange(String user, Buddy.Status status) {
+		
+	}
+	
 }
