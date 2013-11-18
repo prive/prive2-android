@@ -196,7 +196,7 @@ public class Backend extends Service implements ClientHandler {
 	@Override
 	public void onStatusChange(String user, Buddy.Status status) {
 		for(ChatListener listener : listListeners)
-			listener.onStatus(status);
+			listener.onStatusChange(status);
 	}
 	
 	/**
@@ -215,6 +215,11 @@ public class Backend extends Service implements ClientHandler {
 	public interface ChatListener{
 		public void onMessage(String message);
 		public void onStatusChange(Buddy.Status status);
+	}
+	
+	public interface ContactListener{
+		public void onMessage(String user, String message);
+		public void onStatusChange(String user, Buddy.Status status);
 	}
 	
 	public class LocalBinder extends Binder {
