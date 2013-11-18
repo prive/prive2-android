@@ -90,8 +90,9 @@ public class ContactListFragment extends Fragment implements ContactListener {
 	
 	@Override
 	public void onResume() {
-		setStatuses(contacts);
+		
 		doBindService();
+		
 		getActivity().setTitle(TITLE);
 		List<Contact> contacts = mDbManager.getAllContact();
 		lvContacts.setAdapter(new ContactListAdapter(getActivity(), contacts));
@@ -119,6 +120,7 @@ public class ContactListFragment extends Fragment implements ContactListener {
 				((TorChat)getActivity()).changeFragment(profile);
 			}
 		});
+
 		super.onResume();
 	}
 	
@@ -231,6 +233,15 @@ public class ContactListFragment extends Fragment implements ContactListener {
 			
 			mBackend = ((Backend.LocalBinder)service).getService();
 			mBackend.addContactListener(ContactListFragment.this);
+			setStatuses(contacts);
+			getActivity().runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					lvContacts.setAdapter(new ContactListAdapter(getActivity(), contacts));
+				}
+			});
+			
 		}
 	};
 	

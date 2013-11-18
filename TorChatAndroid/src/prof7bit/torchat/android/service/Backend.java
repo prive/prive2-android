@@ -10,6 +10,8 @@ import prof7bit.torchat.android.gui.TorChat;
 import prof7bit.torchat.core.Buddy;
 import prof7bit.torchat.core.Client;
 import prof7bit.torchat.core.ClientHandler;
+import ru.dtlbox.torchat.entities.ChatMessage;
+import ru.dtlbox.torchat.entities.MessageContainerSpike;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -194,6 +196,9 @@ public class Backend extends Service implements ClientHandler {
 
 	@Override
 	public void onMessage(String user, String message) {
+		
+		ChatMessage msg = new ChatMessage("",user).setText(message);
+		MessageContainerSpike.getInstanse().saveMessage(msg);
 		
 		for(ChatListener listener : listListeners)
 			if (listener.getOnionAddress() != null 

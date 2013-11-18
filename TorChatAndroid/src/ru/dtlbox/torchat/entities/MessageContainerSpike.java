@@ -8,7 +8,7 @@ import java.util.Map;
 public class MessageContainerSpike {
 
 	
-	Map<String, List<ChatMessage>> messages;
+	Map<String, List<ChatMessage>> messages = new HashMap<String, List<ChatMessage>>();
 	
 	protected MessageContainerSpike() {
 
@@ -20,12 +20,7 @@ public class MessageContainerSpike {
 	
 	protected static class SingleToneHolder {
 		static MessageContainerSpike instance = new MessageContainerSpike();
-	} 
-	
-	public void init() {
-		this.messages = new HashMap<String, List<ChatMessage>>();
 	}
-	
 	
 	public void saveMessage(ChatMessage message) {
 		if(!messages.containsKey(message.getRecipient())) {
