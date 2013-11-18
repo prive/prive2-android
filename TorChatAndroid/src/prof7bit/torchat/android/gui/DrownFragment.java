@@ -22,13 +22,11 @@ public class DrownFragment extends Fragment {
 	
 		super.onCreateView(inflater, container, savedInstanceState);
 		
-		
-		
 		ImageView fl = new ImageView(getActivity());
 		fl.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
 		
-		fl.setBackgroundResource(R.drawable.timelinescreen);
-		fl.setScaleType(ScaleType.FIT_START);
+		fl.setImageResource(R.drawable.a111111111);
+		fl.setScaleType(ScaleType.CENTER_CROP);
 		
 		
 		return fl;

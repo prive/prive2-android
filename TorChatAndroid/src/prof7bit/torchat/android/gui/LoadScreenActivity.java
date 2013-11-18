@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 
 public class LoadScreenActivity extends SherlockActivity {
@@ -21,10 +23,10 @@ public class LoadScreenActivity extends SherlockActivity {
 		
 		getSupportActionBar().hide();
 		
-		FrameLayout flLoadScreen = new FrameLayout(LoadScreenActivity.this);
-		
-		flLoadScreen.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		flLoadScreen.setBackgroundResource(R.drawable.loadscreen1);
+		ImageView flLoadScreen = new ImageView(LoadScreenActivity.this);
+		flLoadScreen.setScaleType(ScaleType.CENTER_CROP);
+		flLoadScreen.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		flLoadScreen.setImageResource(R.drawable.loadscreen1);
 		setContentView(flLoadScreen);
 		
 		
