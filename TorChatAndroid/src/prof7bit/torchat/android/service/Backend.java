@@ -199,6 +199,17 @@ public class Backend extends Service implements ClientHandler {
 			listener.onStatusChange(status);
 	}
 	
+	public Buddy.Status getBuddyStatus(String onionAddress){
+		if (client == null){
+			return Buddy.Status.OFFLINE;
+		}
+		return client.getBuddyStatus(onionAddress);
+	}
+	
+	public void addNewBuddy(String onionAddress){
+		client.addBuddy(onionAddress);
+	}
+	
 	/**
 	 * Start sending message for certain connection
 	 * @param user
