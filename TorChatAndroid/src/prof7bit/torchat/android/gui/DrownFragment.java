@@ -1,5 +1,7 @@
 package prof7bit.torchat.android.gui;
 
+
+import prof7bit.torchat.android.R;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,7 +24,8 @@ public class DrownFragment extends Fragment {
 		
 		FrameLayout fl = new FrameLayout(getActivity());
 		fl.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
-		fl.setBackgroundColor(Color.parseColor("#FFFFFF"));
+		fl.setBackgroundResource(R.drawable.timelinescreen);
+		
 		
 		
 		return fl;

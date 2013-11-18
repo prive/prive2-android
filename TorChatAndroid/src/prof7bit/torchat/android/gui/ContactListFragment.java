@@ -10,6 +10,7 @@ import prof7bit.torchat.android.service.Backend.ContactListener;
 import prof7bit.torchat.core.Buddy.Status;
 import ru.dtlbox.torchat.customviews.AvatarView;
 import ru.dtlbox.torchat.dbworking.DBManager;
+import ru.dtlbox.torchat.dbworking.DBManager.DBHelper;
 import ru.dtlbox.torchat.entities.Contact;
 import ru.dtlbox.torchat.entities.Contact.ContactStatus;
 import ru.dtlbox.torchat.tests.AvatarSpike;
@@ -89,6 +90,7 @@ public class ContactListFragment extends Fragment implements ContactListener {
 	
 	@Override
 	public void onResume() {
+		setStatuses(contacts);
 		doBindService();
 		getActivity().setTitle(TITLE);
 		List<Contact> contacts = mDbManager.getAllContact();
@@ -251,8 +253,20 @@ public class ContactListFragment extends Fragment implements ContactListener {
 
 	@Override
 	public void onAddNewContact(String user, Status status) {
-		// TODO Auto-generated method stub
-		
+		Contact contact = new Contact(user, user).setStatus(status == Status.ONLINE ? ContactStatus.ONLINE : ContactStatus.OFFLINE);
+		mDbManager.insertContact(contact);
+		contacts = mDbManager.getAllContact();
+		setStatuses(contacts);
+		lvContacts.setAdapter(new ContactListAdapter(getActivity(), contacts));
 	}
+	
+	public void setStatuses(List<Contact> contacts) {
+		if(mIsBound) {
+			for(Contact contact : contacts) {
+				contact.setStatus(mBackend.getBuddyStatus(contact.getOnionAddress()) == Status.ONLINE ? ContactStatus.ONLINE : ContactStatus.OFFLINE);
+			}
+		}
+	}
+	
 
 }
