@@ -206,7 +206,6 @@ public class ContactListFragment extends Fragment implements ContactListener {
 			public void run() {
 				for(Contact contact : contacts)
 					if(user.equals(contact.getOnionAddress())) {
-						Log.i(LOG_TAG, "WARD BL9");
 						contact.setStatus(status == Status.ONLINE ? ContactStatus.ONLINE : ContactStatus.OFFLINE);
 					}
 				if (lvContacts != null){
@@ -249,15 +248,20 @@ public class ContactListFragment extends Fragment implements ContactListener {
 	    }
 	}
 
-
-
 	@Override
-	public void onAddNewContact(String user, Status status) {
-		Contact contact = new Contact(user, user).setStatus(status == Status.ONLINE ? ContactStatus.ONLINE : ContactStatus.OFFLINE);
-		mDbManager.insertContact(contact);
-		contacts = mDbManager.getAllContact();
-		setStatuses(contacts);
-		lvContacts.setAdapter(new ContactListAdapter(getActivity(), contacts));
+	public void onAddNewContact(final String user) {
+		getActivity().runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				Log.i(LOG_TAG, "onAddNewContact  user" + user);
+				Contact contact = new Contact(user, user);
+				mDbManager.insertContact(contact);
+				contacts = mDbManager.getAllContact();
+				setStatuses(contacts);
+				lvContacts.setAdapter(new ContactListAdapter(getActivity(), contacts));
+			}
+		});
 	}
 	
 	public void setStatuses(List<Contact> contacts) {

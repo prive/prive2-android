@@ -216,6 +216,7 @@ public class Backend extends Service implements ClientHandler {
 	
 	@Override
 	public void onNewBuddy(String user) {
+		
 		for (ContactListener listener : listContactListeners)
 			listener.onAddNewContact(user);
 	}

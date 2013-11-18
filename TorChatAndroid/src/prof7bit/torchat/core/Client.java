@@ -27,7 +27,7 @@ public class Client extends BeatHeart implements ListenPortHandler {
 	final static String ONION_DOMAIN = ".onion";
 	final static int TORCHAT_DEFAULT_PORT = 11009;
 	
-	private DBManager dbManager = null;
+	private DBManager mDbManager = null;
 	private ClientHandler clientHandler;
 	public Reactor reactor;
 	private ListenPort listenPort;
@@ -39,14 +39,12 @@ public class Client extends BeatHeart implements ListenPortHandler {
 		this.listenPort.listen(port);
 		
 		//set up DB manager
-		dbManager = new DBManager();
-		dbManager.init(context);
+		mDbManager = new DBManager();
+		mDbManager.init(context);
 		
 		//restore all contacts into buddy list
 		restoreAllContactsBuddies();
 		
-		//start beat heart for buddies connections
-		startBeatHeart();
 	}
 
 	public void close() throws InterruptedException {
@@ -70,7 +68,7 @@ public class Client extends BeatHeart implements ListenPortHandler {
 	 * Function for restoring all buddies from contact rows
 	 */
 	public void restoreAllContactsBuddies(){
-		List<Contact> contacts = dbManager.getAllContact();
+		List<Contact> contacts = mDbManager.getAllContact();
 		for (Contact contact : contacts){
 			boolean alreadyInList = false;
 			for (Buddy buddy : mBuddies)
@@ -91,7 +89,9 @@ public class Client extends BeatHeart implements ListenPortHandler {
 		mMyOnionAddress = onionAddress.split(".onion")[0];
 		Log.i(LOG_TAG + "setMyOnionAddress", "my onion address is "
 				+ mMyOnionAddress);
-
+		
+		//now we have onion address we can start beat heart
+		startBeatHeart();
 	}
 
 	/**
@@ -118,12 +118,15 @@ public class Client extends BeatHeart implements ListenPortHandler {
 		
 		Log.w(LOG_TAG, "buddy for this onion address was not found, create new buddy");
 		Buddy buddy = new Buddy(this);
+		buddy.isNew = true;
 		buddy.addIncomingConnection(connection);
 		addNewBuddy(buddy);
-		onNewBuddy(buddy);
 	}
 	
 	protected void onNewBuddy(Buddy buddy){
+		//just spike yet!
+		Contact contact = new Contact(buddy.getOnionAddressRecepient(), buddy.getOnionAddressRecepient());
+		mDbManager.insertContact(contact);
 		clientHandler.onNewBuddy(buddy.getOnionAddressRecepient());
 	}
 	

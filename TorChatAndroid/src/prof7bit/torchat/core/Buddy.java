@@ -33,6 +33,7 @@ public class Buddy implements ConnectionHandler {
 	public String mOnionAddressRecepient = null;
 
 	Client mClient = null;
+	public boolean isNew = false;
 
 	boolean mHandshakeComlete = false;
 	public HandshakeStatus mHandshakeStatus = HandshakeStatus.NOT_BEGIN;
@@ -119,6 +120,10 @@ public class Buddy implements ConnectionHandler {
 		mHandshakeStatus = HandshakeStatus.COMPLETE;
 		changeBuddyStatus(Status.ONLINE);
 		mClient.onChatEstablished(mOnionAddressRecepient);
+		if (isNew){
+			mClient.onNewBuddy(this);
+			isNew = false;
+		}
 	}
 
 	@Override
@@ -141,6 +146,11 @@ public class Buddy implements ConnectionHandler {
 	public void onDisconnect(Connection connection, String reason) {
 		logInfo(connection.getStringConnectionType() + " onDisconnect: "
 				+ reason);
+		//just a spike!
+		if (connection.type == Connection.Type.INCOMING)
+			mIncomingConnection = null;
+		else
+			mOutcomingConnection = null;
 		mHandshakeStatus = HandshakeStatus.ABORTED;
 		changeBuddyStatus(Status.OFFLINE);
 	}
