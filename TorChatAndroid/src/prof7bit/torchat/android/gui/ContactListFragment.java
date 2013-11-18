@@ -29,6 +29,8 @@ import android.widget.TextView;
 
 public class ContactListFragment extends Fragment {
 	
+	final static String LOG_TAG = "ContactListFragment";
+	
 	DBManager mDbManager;
 	ListView lvContacts;
 	final String TITLE = "Contacts";

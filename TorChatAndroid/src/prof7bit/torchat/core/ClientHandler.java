@@ -18,4 +18,8 @@ public interface ClientHandler {
 
 	public void onMessage(String user, String message);
 	
+	public void onStartChat(String user);
+	
+	public void onStatusChange(String user, Buddy.Status status);
+	
 }
