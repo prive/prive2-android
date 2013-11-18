@@ -69,10 +69,8 @@ public class ChatsFragment extends Fragment {
 	
 	@Override
 	public void onResume() {
-		
-		
-		map = MessageContainerSpike.getInstanse().getAllMessages();
-		lvLastMessages.setAdapter(new HashMapAdapter(getActivity(), map));
+//		map = MessageContainerSpike.getInstanse().getAllMessages();
+//		lvLastMessages.setAdapter(new HashMapAdapter(getActivity(), map));
 		super.onResume();
 	}
 	
