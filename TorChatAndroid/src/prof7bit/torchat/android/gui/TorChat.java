@@ -103,7 +103,7 @@ public class TorChat extends SherlockFragmentActivity {
 				
 					mCheckableGroup.changeChecked((CheckableImageButton)v);
 					FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-					ft.replace(R.id.fl_content, new DrownFragment());
+					ft.replace(R.id.fl_content, new ChatsFragment());
 					ft.commit();
 				}
 			

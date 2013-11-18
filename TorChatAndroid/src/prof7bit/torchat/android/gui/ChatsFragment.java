@@ -19,7 +19,7 @@ public class ChatsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 	
-		View v = inflater.inflate(R.layout.fragment_contact_list, container);
+		View v = inflater.inflate(R.layout.fragment_contact_list, null);
 		
 		lvLastMessages = (ListView)v.findViewById(R.id.lv_contacts);
 		
