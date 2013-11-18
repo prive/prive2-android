@@ -8,6 +8,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import prof7bit.torchat.android.R;
 import prof7bit.torchat.android.service.Backend;
 import prof7bit.torchat.android.service.Backend.ChatListener;
+import prof7bit.torchat.core.Buddy.Status;
 import ru.dtlbox.torchat.customviews.AvatarView;
 import ru.dtlbox.torchat.entities.ChatMessage;
 import ru.dtlbox.torchat.tests.ChatTestActivityDesingTest;
@@ -238,6 +239,12 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 		}
 		
 		
+		
+	}
+
+	@Override
+	public void onStatusChange(Status status) {
+		// TODO Auto-generated method stub
 		
 	}
 

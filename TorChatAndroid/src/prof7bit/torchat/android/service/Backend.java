@@ -193,6 +193,12 @@ public class Backend extends Service implements ClientHandler {
 		
 	}
 	
+	@Override
+	public void onStatusChange(String user, Buddy.Status status) {
+		for(ChatListener listener : listListeners)
+			listener.onStatus(status);
+	}
+	
 	/**
 	 * Start sending message for certain connection
 	 * @param user
@@ -208,6 +214,7 @@ public class Backend extends Service implements ClientHandler {
 	
 	public interface ChatListener{
 		public void onMessage(String message);
+		public void onStatusChange(Buddy.Status status);
 	}
 	
 	public class LocalBinder extends Binder {
@@ -220,11 +227,6 @@ public class Backend extends Service implements ClientHandler {
 	public void onStartChat(String user) {
 		Log.i(LOG_TAG, "onStartChat");
 		TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, "onStartChat");
-	}
-
-	@Override
-	public void onStatusChange(String user, Buddy.Status status) {
-		
 	}
 	
 }
