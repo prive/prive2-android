@@ -10,15 +10,16 @@
         android:gravity="center"
         >
 
-        <ImageView 
-            android:src="@drawable/face_red"
-            android:id="@+id/iv_contact_icon"
+        <ru.dtlbox.torchat.customviews.AvatarView 
+            android:layout_marginLeft="5dip"
+            android:id="@+id/av_contact_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
         	android:layout_margin="5dip"    
             />
         <TextView
-            
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
             android:id="@+id/tv_contact_name"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -26,7 +27,7 @@
             android:layout_marginTop="5dip"
             android:layout_marginBottom="5dip"
             />
-        <CheckBox
+   <!--      <CheckBox
             android:focusable="false"
             android:focusableInTouchMode="false"
             
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:button="@drawable/mark_x"
             android:layout_margin="5dip" 
-            />
+            />  -->
     </LinearLayout>
     <LinearLayout 
         android:id="@+id/ll_ontop"

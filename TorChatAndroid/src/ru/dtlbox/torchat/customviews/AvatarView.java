@@ -14,13 +14,15 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class AvatarView extends ImageView {
 	
 	Bitmap frameImage = null;
 	Context context;
-	
+	boolean isReady = false;
 	
 	public AvatarView(Context context) {
 		super(context);
@@ -34,14 +36,14 @@ public class AvatarView extends ImageView {
 	
 	public void setFrameImage(Bitmap frameImage) {
 		this.frameImage = frameImage;
-		
+		this.setLayoutParams(new LinearLayout.LayoutParams(frameImage.getWidth(),frameImage.getHeight()));
 	}
 	
 	
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-
+		
 	    Drawable drawable = getDrawable();
 
 	    if (drawable == null) {

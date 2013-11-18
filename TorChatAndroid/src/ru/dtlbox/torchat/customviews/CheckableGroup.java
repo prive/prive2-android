@@ -16,6 +16,8 @@ public class CheckableGroup {
 	}
 	
 	public void changeChecked(CheckableImageButton checkedbutton) {
+		if(checkedbutton.isChecked())
+			checkedbutton.setChecked(true);
 		for(CheckableImageButton button : listButtons)
 			if(button!=checkedbutton)
 				button.setChecked(false);
