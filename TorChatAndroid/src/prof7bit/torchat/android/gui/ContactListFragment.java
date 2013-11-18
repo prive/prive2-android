@@ -4,16 +4,22 @@ package prof7bit.torchat.android.gui;
 import java.util.List;
 
 import prof7bit.torchat.android.R;
+import prof7bit.torchat.android.gui.TestChatActivity.ChatAdapter;
 import prof7bit.torchat.android.service.Backend;
+import prof7bit.torchat.android.service.Backend.ContactListener;
+import prof7bit.torchat.core.Buddy.Status;
 import ru.dtlbox.torchat.customviews.AvatarView;
 import ru.dtlbox.torchat.dbworking.DBManager;
 import ru.dtlbox.torchat.entities.Contact;
 import ru.dtlbox.torchat.entities.Contact.ContactStatus;
 import ru.dtlbox.torchat.tests.AvatarSpike;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,21 +33,24 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ContactListFragment extends Fragment {
+public class ContactListFragment extends Fragment implements ContactListener {
 	
 	final static String LOG_TAG = "ContactListFragment";
 	
 	DBManager mDbManager;
 	ListView lvContacts;
 	final String TITLE = "Contacts";
+	List<Contact> contacts;
+	boolean mIsBound;
 	
+	Backend mBackend = null;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_contact_list, null);
 		lvContacts = (ListView)v.findViewById(R.id.lv_contacts);
 		mDbManager = new DBManager().init(getActivity());
-		List<Contact> contacts = mDbManager.getAllContact();
+		contacts = mDbManager.getAllContact();
 		
 		//AvatarSpike.setAvatars(getResources(), contacts);
 		
@@ -111,6 +120,8 @@ public class ContactListFragment extends Fragment {
 		super.onResume();
 	}
 	
+	
+	
 	class ContactListAdapter extends BaseAdapter {
 
 		Context context;
@@ -167,6 +178,53 @@ public class ContactListFragment extends Fragment {
 		}
 		
 	}
+
+	@Override
+	public void onMessage(String user, String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void onStatusChange(String user, Status status) {
+		for(Contact contact : contacts)
+			if(user.equals(contact.getOnionAddress())) {
+				contact.setStatus(status == Status.ONLINE ? ContactStatus.ONLINE : ContactStatus.OFFLINE);
+			}
+		((ContactListAdapter)(lvContacts.getAdapter())).notifyDataSetChanged();
+	}
 	
+	ServiceConnection mConnection = new ServiceConnection() {
+		
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			
+			
+			
+		}
+		
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			
+			mBackend = ((Backend.LocalBinder)service).getService();
+			
+		}
+	};
+	
+	void doBindService() {
+		   
+		getActivity().bindService(new Intent(getActivity(), Backend.class), mConnection, Context.BIND_AUTO_CREATE);
+	    mIsBound = true;
+	}
+
+	void doUnbindService() {
+	    if (mIsBound) {
+
+	        getActivity().unbindService(mConnection);
+	        mIsBound = false;
+	    }
+	}
 
 }
