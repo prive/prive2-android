@@ -159,7 +159,7 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 	void addMessageToChat(String message, boolean isMy){
 		if(isMy) {
 			ChatMessage msg = new ChatMessage("0",getOnionAddress()).setText(message);
-			listMessages.add(msg);
+//			listMessages.add(msg);
 			MessageContainerSpike.getInstanse().saveMessage(msg);
 		}
 		 

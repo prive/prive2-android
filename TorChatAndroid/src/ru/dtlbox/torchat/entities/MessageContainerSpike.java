@@ -32,7 +32,9 @@ public class MessageContainerSpike {
 	public List<ChatMessage> getMessages(String user) {
 		if(messages.containsKey(user))
 			return messages.get(user);
-		return new ArrayList<ChatMessage>();
+		List<ChatMessage> lcm = new ArrayList<ChatMessage>();
+		messages.put(user, lcm);
+		return lcm;
 	}
 	
 	public Map<String, List<ChatMessage>> getAllMessages() {
