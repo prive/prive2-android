@@ -101,13 +101,13 @@ public class Backend extends Service implements ClientHandler {
 		
 	}
 	
-	public void removeListener(ContactListener listener) {
+	public void removeContactListener(ContactListener listener) {
 		Log.i(LOG_TAG, "addListener");
 		listContactListeners.remove(listener);
 		
 	}
 	
-	public void addListener(ContactListener listener) {
+	public void addContactListener(ContactListener listener) {
 		Log.i(LOG_TAG, "addListener");
 		listContactListeners.add(listener);
 		
@@ -258,7 +258,7 @@ public class Backend extends Service implements ClientHandler {
 	@Override
 	public void onStartChat(String user) {
 		Log.i(LOG_TAG, "onStartChat");
-		TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, "onStartChat");
+//		TestChatActivity.openTestChatActivityWithMessage(Backend.this, user, "onStartChat");
 	}
 	
 }

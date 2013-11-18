@@ -123,7 +123,7 @@ public class ContactListFragment extends Fragment implements ContactListener {
 	@Override
 	public void onPause() {
 		if(mBackend != null)
-			mBackend.removeListener(ContactListFragment.this);
+			mBackend.removeContactListener(ContactListFragment.this);
 		doUnbindService();
 		super.onPause();
 	}
@@ -193,15 +193,22 @@ public class ContactListFragment extends Fragment implements ContactListener {
 		
 	}
 
-
-
 	@Override
-	public void onStatusChange(String user, Status status) {
-		for(Contact contact : contacts)
-			if(user.equals(contact.getOnionAddress())) {
-				contact.setStatus(status == Status.ONLINE ? ContactStatus.ONLINE : ContactStatus.OFFLINE);
+	public void onStatusChange(final String user, final Status status) {
+		Log.i(LOG_TAG, "onStatusChange user: " + user + "| status: " + (status == Status.ONLINE ? "online" : "offline"));
+		getActivity().runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				for(Contact contact : contacts)
+					if(user.equals(contact.getOnionAddress())) {
+						contact.setStatus(status == Status.ONLINE ? ContactStatus.ONLINE : ContactStatus.OFFLINE);
+					}
+				if (lvContacts != null)
+					((ContactListAdapter)(lvContacts.getAdapter())).notifyDataSetChanged();				
 			}
-		((ContactListAdapter)(lvContacts.getAdapter())).notifyDataSetChanged();
+		});
+		
 	}
 	
 	ServiceConnection mConnection = new ServiceConnection() {
@@ -209,7 +216,7 @@ public class ContactListFragment extends Fragment implements ContactListener {
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			
-			mBackend.removeListener(ContactListFragment.this);
+			mBackend.removeContactListener(ContactListFragment.this);
 			
 		}
 		
@@ -217,7 +224,7 @@ public class ContactListFragment extends Fragment implements ContactListener {
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			
 			mBackend = ((Backend.LocalBinder)service).getService();
-			mBackend.addListener(ContactListFragment.this);
+			mBackend.addContactListener(ContactListFragment.this);
 		}
 	};
 	
