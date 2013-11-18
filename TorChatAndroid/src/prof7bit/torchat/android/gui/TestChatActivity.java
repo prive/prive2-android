@@ -45,6 +45,7 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 	List<ChatMessage> listMessages = new ArrayList<ChatMessage>();
 	ChatAdapter chatAdapter;
 	
+	//onion address
 	String user = null;
 	
 	ServiceConnection mConnection = new ServiceConnection() {
@@ -246,6 +247,11 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 	public void onStatusChange(Status status) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String getOnionAddress() {
+		return user != null ? user : "";
 	}
 
 }
