@@ -57,7 +57,7 @@ public class ProfileFragment extends Fragment {
 						} catch (Exception e) {
 							// TODO: handle exception
 						}
-						TestChatActivity.openTestChatActivityWithMessage(getActivity(), contact.getNickName(), null);
+						TestChatActivity.openTestChatActivityWithMessage(getActivity(), contact.getOnionAddress(), null);
 						
 					}
 				});

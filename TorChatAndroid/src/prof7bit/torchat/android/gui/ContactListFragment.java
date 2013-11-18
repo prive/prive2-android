@@ -202,10 +202,13 @@ public class ContactListFragment extends Fragment implements ContactListener {
 			public void run() {
 				for(Contact contact : contacts)
 					if(user.equals(contact.getOnionAddress())) {
+						Log.i(LOG_TAG, "WARD BL9");
 						contact.setStatus(status == Status.ONLINE ? ContactStatus.ONLINE : ContactStatus.OFFLINE);
 					}
-				if (lvContacts != null)
-					((ContactListAdapter)(lvContacts.getAdapter())).notifyDataSetChanged();				
+				if (lvContacts != null){
+//					((ContactListAdapter)(lvContacts.getAdapter())).notifyDataSetChanged();
+					lvContacts.setAdapter(new ContactListAdapter(getActivity(), contacts));
+				}
 			}
 		});
 		
