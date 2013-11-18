@@ -182,7 +182,7 @@ public class ContactListFragment extends Fragment implements ContactListener {
 			TextView tvNickname = (TextView)convertView.findViewById(R.id.tv_contact_name);
 			tvNickname.setText(contacts.get(position).getNickName());
 			
-			((CheckBox)convertView.findViewById(R.id.cb_status)).setChecked(contacts.get(position).getStatus() == ContactStatus.ONLINE);
+			
 			((TextView)convertView.findViewById(R.id.tv_status)).setText(contacts.get(position).getTag());
 			
 			convertView.setTag(contacts.get(position));			

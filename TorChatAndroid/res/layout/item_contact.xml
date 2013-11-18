@@ -42,7 +42,7 @@
             android:layout_marginTop="5dip"
             android:layout_marginBottom="5dip"
             />
-         <CheckBox
+  <!--        <CheckBox
              android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:button="@drawable/mark_x"
             android:layout_margin="5dip" 
-            />  
+            />  -->  
     </LinearLayout>
     <LinearLayout 
         android:id="@+id/ll_ontop"

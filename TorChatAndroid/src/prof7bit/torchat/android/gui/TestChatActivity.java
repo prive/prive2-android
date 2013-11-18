@@ -11,6 +11,7 @@ import prof7bit.torchat.android.service.Backend.ChatListener;
 import prof7bit.torchat.core.Buddy.Status;
 import ru.dtlbox.torchat.customviews.AvatarView;
 import ru.dtlbox.torchat.entities.ChatMessage;
+import ru.dtlbox.torchat.entities.MessageContainerSpike;
 import ru.dtlbox.torchat.tests.ChatTestActivityDesingTest;
 import android.app.Activity;
 import android.content.ComponentName;
@@ -78,6 +79,7 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 		btnSend = (Button)findViewById(R.id.btn_send);
 		
 		btnSend.setOnClickListener(this);
+		listMessages = MessageContainerSpike.getInstanse().getMessages(getOnionAddress());
 		chatAdapter = new ChatAdapter(TestChatActivity.this, listMessages);
 		//chatAdapter = new ChatAdapter(TestChatActivity.this, ChatTestActivityDesingTest.generateMessages());
 		lvChat.setAdapter(chatAdapter);
@@ -130,6 +132,8 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 			@Override
 			public void run() {
 				addMessageToChat(message, false);
+				
+				
 			}
 		});
 		
@@ -150,15 +154,19 @@ public class TestChatActivity extends SherlockActivity implements ChatListener, 
 	}
 	
 	void addMessageToChat(String message, boolean isMy){
-		if(isMy)
+		if(isMy) {
 			listMessages.add(new ChatMessage("0","").setText(message));
-		else
+			MessageContainerSpike.getInstanse().saveMessage(new ChatMessage("0", getOnionAddress()));
+		}
+		else {
 			listMessages.add(new ChatMessage("","").setText(message));
+			MessageContainerSpike.getInstanse().saveMessage(new ChatMessage("", getOnionAddress()));
+		}
 		//TODO 
 		((ChatAdapter)(lvChat.getAdapter())).notifyDataSetChanged();
 		lvChat.setSelection(lvChat.getAdapter().getCount()-1);
 		
-	
+		
 	}
 
 	@Override
