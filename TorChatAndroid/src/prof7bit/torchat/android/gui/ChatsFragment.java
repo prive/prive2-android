@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import prof7bit.torchat.android.R;
+import prof7bit.torchat.android.service.Backend;
 import ru.dtlbox.torchat.customviews.AvatarView;
 import ru.dtlbox.torchat.entities.ChatMessage;
+import ru.dtlbox.torchat.entities.Contact;
 import ru.dtlbox.torchat.entities.MessageContainerSpike;
 import ru.dtlbox.torchat.entities.Contact.ContactStatus;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +19,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,7 +40,27 @@ public class ChatsFragment extends Fragment {
 		lvLastMessages = (ListView)v.findViewById(R.id.lv_contacts);
 		
 		
-		
+		lvLastMessages.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				
+				String contact = (String)(arg1.getTag());
+				Intent intent = new Intent(getActivity(), Backend.class);
+				intent.setAction(Backend.ACTION_OPEN_CONNECTION);
+				intent.putExtra(Backend.EXTRA_STRING_ONION_ADDRESS, contact);
+				try {
+					((TorChat)getActivity()).startService(intent);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				TestChatActivity.openTestChatActivityWithMessage(getActivity(), contact, null);
+				
+				
+			}
+			
+		});
 		
 		
 		
@@ -93,8 +118,8 @@ public class ChatsFragment extends Fragment {
 			
 			
 	        ((TextView)convertView.findViewById(R.id.tv_contact_name)).setText(name);
-	        ((TextView)convertView.findViewById(R.id.tv_message_text)).setText(messages.get(messages.size()-1).getText());
-
+	        ((TextView)convertView.findViewById(R.id.tv_contact_name)).setText(messages.get(messages.size()-1).getText());
+	        convertView.setTag(name);
 
 	        return convertView;
 	    }
