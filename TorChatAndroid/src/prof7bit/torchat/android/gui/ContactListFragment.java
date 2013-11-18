@@ -50,15 +50,21 @@ public class ContactListFragment extends Fragment {
 					long arg3) {
 				
 				Contact contact = (Contact)(arg1.getTag());
-				Intent intent = new Intent(getActivity(), Backend.class);
-				intent.setAction(Backend.ACTION_OPEN_CONNECTION);
-				intent.putExtra(Backend.EXTRA_STRING_ONION_ADDRESS, contact.getOnionAddress());
-				try {
-					((TorChat)getActivity()).startService(intent);
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-				TestChatActivity.openTestChatActivityWithMessage(getActivity(), contact.getNickName(), null);
+//				Intent intent = new Intent(getActivity(), Backend.class);
+//				intent.setAction(Backend.ACTION_OPEN_CONNECTION);
+//				intent.putExtra(Backend.EXTRA_STRING_ONION_ADDRESS, contact.getOnionAddress());
+//				try {
+//					((TorChat)getActivity()).startService(intent);
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//				}
+//				TestChatActivity.openTestChatActivityWithMessage(getActivity(), contact.getNickName(), null);
+				ProfileFragment profile = new ProfileFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString(Contact.KEY_NICKNAME, contact.getNickName());
+				bundle.putString(Contact.KEY_ONION_ADDRESS, contact.getOnionAddress());
+				profile.setArguments(bundle);
+				((TorChat)getActivity()).changeFragment(profile);
 			}
 		});
 		
@@ -81,7 +87,7 @@ public class ContactListFragment extends Fragment {
 					long arg3) {
 				
 				Contact contact = (Contact)(arg1.getTag());
-				Intent intent = new Intent(getActivity(), Backend.class);
+				/*Intent intent = new Intent(getActivity(), Backend.class);
 				intent.setAction(Backend.ACTION_OPEN_CONNECTION);
 				intent.putExtra(Backend.EXTRA_STRING_ONION_ADDRESS, contact.getOnionAddress());
 				try {
@@ -89,7 +95,13 @@ public class ContactListFragment extends Fragment {
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
-				TestChatActivity.openTestChatActivityWithMessage(getActivity(), contact.getNickName(), null);
+				TestChatActivity.openTestChatActivityWithMessage(getActivity(), contact.getNickName(), null);*/
+				ProfileFragment profile = new ProfileFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString(Contact.KEY_NICKNAME, contact.getNickName());
+				bundle.putString(Contact.KEY_ONION_ADDRESS, contact.getOnionAddress());
+				profile.setArguments(bundle);
+				((TorChat)getActivity()).changeFragment(profile);
 			}
 		});
 		super.onResume();

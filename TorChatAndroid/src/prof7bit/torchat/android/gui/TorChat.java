@@ -9,6 +9,8 @@ import ru.dtlbox.torchat.customviews.CheckableGroup;
 import ru.dtlbox.torchat.customviews.CheckableImageButton;
 
 
+
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -262,5 +264,12 @@ public class TorChat extends SherlockFragmentActivity {
 	public String getOnionAddress() {
 		return onionAddress;
 	}
+	
+	public void changeFragment(Fragment fragment) {
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.replace(R.id.fl_content, fragment);
+		ft.commit();
+	}
+	
 	
 }

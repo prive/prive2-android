@@ -6,6 +6,10 @@ import android.util.Log;
 public class Contact {
 
 	
+	public static final String KEY_ONION_ADDRESS = "address";
+	public static final String KEY_NICKNAME = "nickname";
+	
+	
 	private String onionAddress;
 	private String nickName;
 	
